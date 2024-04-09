@@ -11,6 +11,8 @@ import avatar from '/public/avatar.jpg';
 
 import {Icon} from '@iconify/react';
 import Link from 'next/link';
+import Header from '@/components/layout/Header';
+import FooterSection from '@/components/layout/Footer';
 
 const reasons = [
   {
@@ -93,6 +95,7 @@ const testimonials = [
 export default function Home() {
   return (
     <main>
+      <Header />
       <div className='mx-auto max-w-7xl py-6 sm:px-6 lg:px-8'>
         <div className='flex items-center flex-col gap-4 md:grid md:grid-cols-2 md:gap-10'>
           <div className='mt-8 sm:mt-24 md:mt-32'>
@@ -247,6 +250,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <FooterSection />
     </main>
   );
 }

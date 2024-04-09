@@ -1,8 +1,6 @@
 import type {Metadata} from 'next';
-import {Josefin_Sans, Lato} from 'next/font/google';
+import {Lato} from 'next/font/google';
 import './globals.css';
-import Header from '@/components/layout/Header';
-import FooterSection from '@/components/layout/Footer';
 
 const lato = Lato({
   subsets: ['latin'],
@@ -26,12 +24,10 @@ export default function RootLayout({
       className='h-full bg-secondary'
     >
       <body className={lato.className}>
-        <div className='flex flex-col justify-between'>
-          <Header />
-          <main className='flex flex-col  items-center justify-between'>
+        <div className=''>
+          <main className=''>
             {children}
           </main>
-          <FooterSection />
         </div>
       </body>
     </html>

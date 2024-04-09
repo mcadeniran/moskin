@@ -18,7 +18,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className='inset-x-0 top-0 z-50 bg-secondary sticky'>
+    <header className='inset-x-0 top-0 z-50 bg-secondary sticky bg-white'>
       <nav
         className='flex items-center justify-between p-4 lg:px-8'
         aria-label='Global'
@@ -60,13 +60,19 @@ export default function Header() {
               {item.name}
             </a>
           ))}
+          <a
+            href={'/admin'}
+            className='text-sm font-semibold leading-6 text-gray-900'
+          >
+            Switch to Admin
+          </a>
         </div>
         <div className='hidden lg:flex lg:flex-1 lg:justify-end gap-6 items-baseline'>
           <Link href={''}>
             <Icon icon={'carbon:search'} height={22} width={22} className='text-sm font-semibold leading-6 text-gray-900' />
           </Link>
           <Link href={''}> <Icon icon={'ph:shopping-bag-light'} height={26} width={26} className='text-sm font-semibold leading-6 text-gray-900' /></Link>
-          <Link href={''}> <Icon icon={'healthicons:ui-user-profile-outline'} height={26} width={26} className='text-sm font-semibold leading-6 text-gray-900' /></Link>
+          <Link href={'/login'}> <Icon icon={'healthicons:ui-user-profile-outline'} height={26} width={26} className='text-sm font-semibold leading-6 text-gray-900' /></Link>
 
         </div>
       </nav>
@@ -114,18 +120,24 @@ export default function Header() {
                     {item.name}
                   </a>
                 ))}
+                <a
+                  href={'/admin'}
+                  className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
+                >
+                  Switch to Admin
+                </a>
               </div>
               <div className='py-6'>
                 <Link href={''}
                   className='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
                 >Cart</Link>
                 <Link href={''} className='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'>Search</Link>
-                <a
-                  href='#'
+                <Link
+                  href='/login'
                   className='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
                 >
                   Log in
-                </a>
+                </Link>
               </div>
             </div>
           </div>
