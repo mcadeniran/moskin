@@ -1,19 +1,22 @@
+import AdminNavbar from "@/components/layout/AdminComponents/AdminNavbar";
+import AdminSidebar from "@/components/layout/AdminComponents/AdminSidebar";
 import FooterSection from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
 
-export default function RootLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <div className='flex flex-col justify-between bg-red-400'>
-      <Header />
-
-      <main className='flex flex-col  items-center justify-between'>
+    <div className='flex bg-white'>
+      <div className=' basis-1/5 p-4 min-h-screen border-r'>
+        <AdminSidebar />
+      </div>
+      <div className=" basis-4/5 p-4">
+        <AdminNavbar />
         {children}
-      </main>
-      <FooterSection />
+        <FooterSection />
+      </div>
     </div>
   );
 }
