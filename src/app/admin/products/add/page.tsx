@@ -9,6 +9,9 @@ import {Textarea} from '@/components/ui/textarea';
 import {Checkbox} from '@/components/ui/checkbox';
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
 import ImageDropZone from '@/components/layout/AdminComponents/ImageDropZone';
+import {toast} from 'sonner';
+import {Switch} from '@/components/ui/switch';
+import {useEffect, useState} from 'react';
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -19,9 +22,11 @@ const formSchema = z.object({
   ingredients: z.string(),
   sale: z.boolean(),
   off: z.string(),
+  images: z.array(z.string()),
+  display: z.boolean(),
 });
 export default function AddProductPage() {
-
+  const [cats, setCats] = useState<Category[]>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,17 +37,61 @@ export default function AddProductPage() {
       features: '',
       ingredients: '',
       sale: false,
-      off: ''
+      off: '0',
+      images: [],
+      display: true,
     }
   });
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({values});
+
+
+  useEffect(() => {
+    fetch('/api/category').then((response) => {
+      response.json().then((c) => {
+        setCats(c);
+      });
+    }
+    );
+  }, []);
+
+
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const data = {...values};
+    console.log(data);
+    const result = await fetch('/api/product', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+
+    if (result.ok) {
+      toast.success('Product created successfully.');
+    } else {
+      toast.error('Failed to create product.');
+    }
+
+    console.log('Result: ' + result);
   };
+
+  const handleFileAdd = async (filesToUpload: string[]) => {
+    const newImages = [...form.getValues('images'), ...filesToUpload];
+    form.setValue('images', newImages);
+    console.log(...form.getValues('images'));
+  };
+
+  const handleFileDelete = async (url: string) => {
+    const updatedImages = form.getValues('images').filter(image => image !== url);
+    form.setValue('images', updatedImages);
+    await handleSubmit(form.getValues());
+  };
+
   return (
     <div className='flex w-full  bg-accent p-4 rounded-xl gap-4'>
       <div className=" basis-1/4">
-        <ImageDropZone />
+        <ImageDropZone
+          photos={form.getValues('images')}
+          onFileDelete={handleFileDelete}
+          onFilesAdded={handleFileAdd}
+        />
       </div>
       <div className="basis-3/4">
         <Form  {...form}>
@@ -67,15 +116,17 @@ export default function AddProductPage() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className='bg-input'>
-                      <SelectItem value='Facial products'>Facial products</SelectItem>
-                      <SelectItem value='Stretch mark products'>Stretch mark products</SelectItem>
+                      {cats.length > 0 && cats.map(c => (
+                        <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                      ))}
+                      {/* <SelectItem value='Stretch mark products'>Stretch mark products</SelectItem>
                       <SelectItem value='Black Soap'>Black Soap</SelectItem>
                       <SelectItem value='Liquid Soap'>Liquid Soap</SelectItem>
                       <SelectItem value='Scrub'>Scrub</SelectItem>
                       <SelectItem value='Body cream/body butter'>Body cream/body butter</SelectItem>
                       <SelectItem value='Body milk'>Body milk</SelectItem>
                       <SelectItem value='Serum/oil'>Serum/oil</SelectItem>
-                      <SelectItem value='Lip care'>Lip care</SelectItem>
+                      <SelectItem value='Lip care'>Lip care</SelectItem> */}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -138,7 +189,30 @@ export default function AddProductPage() {
                 </FormControl>
               </FormItem>;
             }} />
-            <Button type='submit' className=' w-min px-8 py-3'>Submit</Button>
+            <div className="flex justify-between">
+              <Button type='submit' className=' w-min px-8 py-3'>Submit Product</Button>
+              <div className="">
+                <FormField
+                  control={form.control}
+                  name="display"
+                  render={({field}) => (
+                    <FormItem className='flex items-center justify-between font-bold'>
+                      <FormLabel
+                        className={`${field.value ? 'text-green-500' : 'text-red-500'} mr-4 `}
+                      >
+                        {field.value ? 'Visible in shop' : 'Not visible in shop'}
+                      </FormLabel>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className='bg-input'
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )} />
+              </div>
+            </div>
           </form>
         </Form>
       </div>

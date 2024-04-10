@@ -10,9 +10,8 @@ type Product = {
 };
 
 type Category = {
-  id: number;
+  id: string;
   name: string;
-  image: string;
   creationAt: string;
   updatedAt: string;
 };

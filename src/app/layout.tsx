@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import {Lato} from 'next/font/google';
 import './globals.css';
+import {Toaster} from '@/components/ui/sonner';
 
 const lato = Lato({
   subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function RootLayout({
         <div className=''>
           <main className=''>
             {children}
+            <Toaster />
           </main>
         </div>
       </body>

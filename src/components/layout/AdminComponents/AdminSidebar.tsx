@@ -10,6 +10,7 @@ import {
   MdOutlineSettings,
   MdSwitchAccount,
   MdLogout,
+  MdCategory,
 } from "react-icons/md";
 import MenuLink from './menuLink';
 import Image from 'next/image';
@@ -32,6 +33,11 @@ const menuItems = [
         title: "Products",
         path: "/admin/products",
         icon: <MdShoppingBag />,
+      },
+      {
+        title: "Categories",
+        path: "/admin/categories",
+        icon: <MdCategory />,
       },
       {
         title: "Transactions",
