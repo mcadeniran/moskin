@@ -20,7 +20,7 @@ const users = [
 
 export default function UsersPage() {
   return (
-    <div className=''>
+    <div className=' bg-accent p-4 rounded-xl'>
       <div className="">
         <div className="flex justify-between items-center mb-8">
           <SearchBar placeholder='Search users' />
@@ -63,8 +63,8 @@ export default function UsersPage() {
                   <td className='p-3'>{user.status}</td>
                   <td className='p-3'>
                     <div className="flex gap-3">
-                      <Link href='' className='py-2 px-3 rounded-lg   bg-slate-800 text-white'>View</Link>
-                      <Link href='' className='py-2 px-3 rounded-lg bg-red-500 text-white'>Delete</Link>
+                      <Link href={'/admin/users/' + user.id} className='py-2 px-3 rounded-lg   bg-slate-800 text-white'>View</Link>
+                      <Link href='' className='py-2 px-3 rounded-lg bg-destructive text-white'>Delete</Link>
                     </div>
                   </td>
                 </tr>

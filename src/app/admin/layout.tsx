@@ -8,11 +8,11 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className='flex bg-white'>
-      <div className=' basis-1/5 p-4 min-h-screen border-r'>
+    <div className='flex'>
+      <div className=' basis-1/5 p-4 bg-accent min-h-screen border-r'>
         <AdminSidebar />
       </div>
-      <div className=" basis-4/5 p-4">
+      <div className=" basis-4/5 p-4 ">
         <AdminNavbar />
         {children}
         <FooterSection />

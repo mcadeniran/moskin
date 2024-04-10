@@ -20,7 +20,7 @@ const products = [
 
 export default function ProductsPage() {
   return (
-    <div className="">
+    <div className=" bg-accent p-4 rounded-xl">
       <div className="flex justify-between items-center mb-8">
         <SearchBar placeholder='Search products' />
         <Link href={'/admin/products/add'} className='border rounded-xl bg-slate-800 text-white px-3 py-2'>Add New</Link>

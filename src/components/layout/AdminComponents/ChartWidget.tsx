@@ -42,7 +42,7 @@ const data = [
 
 export default function ChartWidget() {
   return (
-    <div className='my-8 p-5 border rounded-xl h-[450px]'>
+    <div className='my-8 p-5  bg-accent border rounded-xl h-[450px]'>
       <h2 className='text-xl font-extralight text-gray-700 mb-5'>Weekly Recap</h2>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart

@@ -10,7 +10,7 @@ export default function StatCardWidget({stat}: {
   };
 }) {
   return (
-    <div className="p-5 flex border rounded-lg gap-3 cursor-pointer hover:bg-gray-100">
+    <div className="p-5 flex border rounded-lg gap-3  bg-accent cursor-pointer hover:bg-gray-100">
       {stat.icon}
       <div className="flex flex-col gap-3">
         <span className="">{stat.title}</span>

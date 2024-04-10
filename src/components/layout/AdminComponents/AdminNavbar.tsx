@@ -12,13 +12,13 @@ export default function AdminNavbar() {
     pageTitle = 'dashboard';
   }
   return (
-    <div className="flex justify-between items-center mb-5">
+    <div className="flex justify-between  bg-accent p-4 rounded-xl items-center mb-5">
       <div className="text-gray-700 font-bold capitalize">
         {pageTitle}
         {/* {pathname.split("/").pop()} */}
       </div>
       <div className="flex items-center gap-5">
-        <div className="flex items-center gap-x-2 bg-gray-100 p-1 rounded-lg">
+        <div className="flex items-center gap-x-2 bg-input p-1 rounded-lg">
           <MdSearch />
           <input type="text" placeholder="Search..." className="bg-transparent border-none px-2 py-1" />
         </div>

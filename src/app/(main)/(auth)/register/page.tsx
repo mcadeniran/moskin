@@ -10,6 +10,12 @@ import Link from 'next/link';
 const formSchema = z.object({
   emailAddress: z.string().email(),
   password: z.string().min(6),
+  passwordConfirm: z.string(),
+}).refine((data) => {
+  return data.password === data.passwordConfirm;
+}, {
+  message: 'Passwords do not match',
+  path: ['passwordConfirm']
 });
 
 export default function LoginPage() {
@@ -18,6 +24,7 @@ export default function LoginPage() {
     defaultValues: {
       emailAddress: '',
       password: '',
+      passwordConfirm: '',
     }
   });
 
@@ -29,7 +36,7 @@ export default function LoginPage() {
     <main className='flex h-[calc(100vh-128px)] w-full items-center justify-center'>
       <div className="flex flex-col justify-center bg-accent p-10 rounded-xl items-center">
         <Form {...form}>
-          <h3 className='mb-8 text-2xl font-semibold'>Login</h3>
+          <h3 className='mb-8 text-2xl font-semibold'>Register</h3>
           <form onSubmit={form.handleSubmit(handleSubmit)} className='max-w-md w-full flex flex-col gap-4'>
             <FormField control={form.control} name='emailAddress' render={({field}) => {
               return <FormItem>
@@ -40,7 +47,6 @@ export default function LoginPage() {
                 <FormMessage />
               </FormItem>;
             }} />
-
             <FormField control={form.control} name='password' render={({field}) => {
               return <FormItem>
                 <FormLabel>Password</FormLabel>
@@ -50,13 +56,22 @@ export default function LoginPage() {
                 <FormMessage />
               </FormItem>;
             }} />
-            <Button type='submit' className='w-full'>Login</Button>
+            <FormField control={form.control} name='passwordConfirm' render={({field}) => {
+              return <FormItem>
+                <FormLabel>Confirm password</FormLabel>
+                <FormControl>
+                  <Input className='bg-input' {...field} placeholder='Confirm Password' type='password' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>;
+            }} />
+            <Button type='submit' className='w-full'>Submit</Button>
           </form>
           <div className="grid grid-cols-2 mt-6 justify-between">
             <div className='grow'></div>
             <p className=''>
-              {"Don't"} have an account?{' '}
-              <Link href={'/register'} className=' text-red-500 italic'>Register</Link> </p>
+              Already have an account?{' '}
+              <Link href={'/login'} className=' text-red-500 italic'>Sign in</Link> </p>
           </div>
         </Form>
       </div>

@@ -47,7 +47,7 @@ const transactions = [
 
 export default function TransactionWidget() {
   return (
-    <div className='mt-8 p-5 border rounded-xl'>
+    <div className='mt-8 p-5 border  bg-accent rounded-xl'>
       <h2 className='text-xl font-extralight text-gray-700'>Latest Transactions</h2>
       <table className="w-full">
         <thead>
