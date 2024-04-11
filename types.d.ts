@@ -1,12 +1,20 @@
 type Product = {
-  id: number;
-  title: string;
+  id: string;
+  name: string;
   price: number;
-  description: string;
   images: string[];
-  creationAt: string;
+  onSale: boolean;
+  off: number;
+  features: string;
+  ingredients: string;
+  display: boolean;
+  createdAt: string;
+  updatedAt: string;
+  categoryId: string;
+  createdAt: string;
   updatedAt: string;
   category: Category;
+  description: string;
 };
 
 type Category = {

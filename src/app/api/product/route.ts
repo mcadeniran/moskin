@@ -2,7 +2,10 @@ import { db } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  return NextResponse.json({ message: true });
+  const products = await db.product.findMany({
+    include: { Category: true },
+  });
+  return NextResponse.json(products);
 }
 
 export async function POST(req: Request) {
@@ -24,12 +27,12 @@ export async function POST(req: Request) {
     const newProduct = await db.product.create({
       data: {
         name: body.name,
-        price: parseInt(body.price),
+        price: body.price,
         description: body.description,
-        display: true,
+        display: body.display,
         ingredients: body.ingredients,
-        onSale: false,
-        off: parseInt(body.off),
+        onSale: body.sale,
+        off: body.off,
         images: body.images,
         features: body.features,
         categoryId: body.category,

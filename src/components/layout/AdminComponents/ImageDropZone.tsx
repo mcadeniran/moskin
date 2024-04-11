@@ -140,30 +140,25 @@ function ImageDropZone({
   };
   return (
     <>
-      {/* upload box */}
-      <div className='grid 
-        gap-2
-        grid-cols-[repeat(1,1fr)]
-        sm:grid-cols-[repeat(2,1fr)]
-        lg:grid-cols-[repeat(3,1fr)]
-        xl:grid-cols-[repeat(4,1fr)]
-        '>
-        <div {...getRootProps()}
-          className='text-center p-2 cursor-pointer border-2 border-dashed border-slate-200'>
-          <input {...getInputProps()} />
-          <div className='flex flex-col items-center justify-center 
+      <div {...getRootProps()}
+        className='text-center p-2 cursor-pointer border-2 border-dashed border-slate-200'>
+        <input {...getInputProps()} />
+        <div className='flex flex-col items-center justify-center 
                 text-xs text-gray-400'>
-            <UploadCloudIcon className='mb-4 w-8 h-8' />
-            <div className="text-gray-400">drag &amp; drop to upload</div>
-            <div className="mt-2">
-              <Button
-                disabled={uploading}
-                type='button' variant='ghost' >Select</Button>
-            </div>
+          <UploadCloudIcon className='mb-4 w-8 h-8' />
+          <div className="text-gray-400">drag &amp; drop to upload</div>
+          <div className="mt-2">
+            <Button
+              disabled={uploading}
+              type='button' variant='ghost' >Select</Button>
           </div>
         </div>
-
-
+      </div>
+      {/* upload box */}
+      <div className='grid mt-2
+        gap-2
+        grid-cols-2
+        '>
         {
           imageStates.map((image, index) => (
             <div key={index}

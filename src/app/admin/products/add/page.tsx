@@ -14,14 +14,20 @@ import {Switch} from '@/components/ui/switch';
 import {useEffect, useState} from 'react';
 
 const formSchema = z.object({
-  name: z.string().min(3),
-  category: z.string(),
-  price: z.string(),
-  description: z.string(),
+  name: z.string().min(3, {
+    message: 'Product name must be at least 3 characters.'
+  }),
+  category: z.string().min(1, {
+    message: 'Category is required.'
+  }),
+  price: z.coerce.number({invalid_type_error: 'Price must be a number'})
+    .positive({message: 'Price must be positive'})
+    .finite({message: 'Must be a valid price'}),
+  description: z.string().min(1, {message: 'Description is required'}),
   features: z.string(),
-  ingredients: z.string(),
+  ingredients: z.string().min(1, {message: 'Active ingredients are required'}),
   sale: z.boolean(),
-  off: z.string(),
+  off: z.coerce.number(),
   images: z.array(z.string()),
   display: z.boolean(),
 });
@@ -32,12 +38,12 @@ export default function AddProductPage() {
     defaultValues: {
       name: '',
       category: '',
-      price: '',
+      price: 0,
       description: '',
       features: '',
       ingredients: '',
       sale: false,
-      off: '0',
+      off: 0,
       images: [],
       display: true,
     }
@@ -57,7 +63,7 @@ export default function AddProductPage() {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const data = {...values};
-    console.log(data);
+    // console.log(data);
     const result = await fetch('/api/product', {
       method: 'POST',
       body: JSON.stringify(data)
@@ -69,19 +75,19 @@ export default function AddProductPage() {
       toast.error('Failed to create product.');
     }
 
-    console.log('Result: ' + result);
+    console.log('Result: ' + result.body);
   };
 
   const handleFileAdd = async (filesToUpload: string[]) => {
     const newImages = [...form.getValues('images'), ...filesToUpload];
     form.setValue('images', newImages);
-    console.log(...form.getValues('images'));
+    // console.log(...form.getValues('images'));
   };
 
   const handleFileDelete = async (url: string) => {
     const updatedImages = form.getValues('images').filter(image => image !== url);
     form.setValue('images', updatedImages);
-    await handleSubmit(form.getValues());
+    // await handleSubmit(form.getValues());
   };
 
   return (
@@ -119,14 +125,6 @@ export default function AddProductPage() {
                       {cats.length > 0 && cats.map(c => (
                         <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
                       ))}
-                      {/* <SelectItem value='Stretch mark products'>Stretch mark products</SelectItem>
-                      <SelectItem value='Black Soap'>Black Soap</SelectItem>
-                      <SelectItem value='Liquid Soap'>Liquid Soap</SelectItem>
-                      <SelectItem value='Scrub'>Scrub</SelectItem>
-                      <SelectItem value='Body cream/body butter'>Body cream/body butter</SelectItem>
-                      <SelectItem value='Body milk'>Body milk</SelectItem>
-                      <SelectItem value='Serum/oil'>Serum/oil</SelectItem>
-                      <SelectItem value='Lip care'>Lip care</SelectItem> */}
                     </SelectContent>
                   </Select>
                   <FormMessage />
