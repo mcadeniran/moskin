@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {Lato} from 'next/font/google';
 import './globals.css';
 import {Toaster} from '@/components/ui/sonner';
+import Provider from '@/components/Provider';
 
 const lato = Lato({
   subsets: ['latin'],
@@ -22,15 +23,15 @@ export default function RootLayout({
   return (
     <html
       lang='en'
-      className='h-full bg-secondary'
+      className='h-full bg-white'
     >
-      <body className={lato.className}>
-        <div className=''>
-          <main className=''>
+      <body className={lato.className} suppressHydrationWarning={true}>
+        <Provider>
+          <div>
             {children}
-            <Toaster />
-          </main>
-        </div>
+          </div>
+          <Toaster />
+        </Provider>
       </body>
     </html>
   );

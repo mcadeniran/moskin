@@ -6,10 +6,13 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
+import {toast} from 'sonner';
 
 const formSchema = z.object({
-  emailAddress: z.string().email(),
-  password: z.string().min(6),
+  email: z.string().min(1, 'Email is required').email('Invalid email'),
+  username: z.string().min(1, 'Username is required').min(2, 'Username should have at least 2 characters'),
+  password: z.string().min(1, 'Password is required').min(8, 'Password must have at least 8 characters'),
   passwordConfirm: z.string(),
 }).refine((data) => {
   return data.password === data.passwordConfirm;
@@ -19,17 +22,38 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      emailAddress: '',
+      email: '',
+      username: '',
       password: '',
       passwordConfirm: '',
     }
   });
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({values});
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    // console.log({values});
+    const response = await fetch('/api/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: values.email,
+        username: values.username,
+        password: values.password
+      })
+    });
+
+    if (response.ok) {
+      router.push('/login');
+    } else {
+      toast.error('Registration failed.');
+      console.log(response);
+    }
   };
 
   return (
@@ -38,11 +62,20 @@ export default function LoginPage() {
         <Form {...form}>
           <h3 className='mb-8 text-2xl font-semibold'>Register</h3>
           <form onSubmit={form.handleSubmit(handleSubmit)} className='max-w-md w-full flex flex-col gap-4'>
-            <FormField control={form.control} name='emailAddress' render={({field}) => {
+            <FormField control={form.control} name='email' render={({field}) => {
               return <FormItem>
                 <FormLabel>Email address</FormLabel>
                 <FormControl>
                   <Input className='bg-input' {...field} placeholder='Email address' type='email' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>;
+            }} />
+            <FormField control={form.control} name='username' render={({field}) => {
+              return <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input className='bg-input' {...field} placeholder='Username' type='text' />
                 </FormControl>
                 <FormMessage />
               </FormItem>;
@@ -65,7 +98,7 @@ export default function LoginPage() {
                 <FormMessage />
               </FormItem>;
             }} />
-            <Button type='submit' className='w-full'>Submit</Button>
+            <Button type='submit' className='w-full'>Register</Button>
           </form>
           <div className="grid grid-cols-2 mt-6 justify-between">
             <div className='grow'></div>

@@ -1,21 +1,38 @@
-'use client';
-
-import {useState} from 'react';
-import {Dialog} from '@headlessui/react';
-import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline';
 import logo from '/public/logo.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import {Icon} from '@iconify/react/dist/iconify.js';
+import {MobileNavbar} from './MobileNavbar';
+import {ClockCounterClockwise, Gear, MagnifyingGlass, ShoppingBag, User, UserCircle} from "@phosphor-icons/react/dist/ssr";
+import {authOptions} from '@/lib/auth';
+import {getServerSession} from 'next-auth';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import AccountSignout from '../AccountSignout';
+
+
 
 const navigation = [
   {name: 'Home', href: '/'},
   {name: 'About', href: '#'},
-  {name: 'Shop', href: '/shop'},
+  {name: 'Our Products', href: '/shop'},
 ];
 
-export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export default async function Header() {
+  const session = await getServerSession(authOptions);
+  // console.log(session);
 
   return (
     <header className='inset-x-0 top-0 z-50 bg-secondary sticky bg-white'>
@@ -38,111 +55,72 @@ export default function Header() {
           </a>
         </div>
         <div className='flex lg:hidden'>
-          <button
-            type='button'
-            className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700'
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className='sr-only'>Open main menu</span>
-            <Bars3Icon
-              className='h-6 w-6'
-              aria-hidden='true'
-            />
-          </button>
+          {/* Implement Shadcn menu side */}
+          <MobileNavbar />
         </div>
         <div className='hidden lg:flex lg:gap-x-12'>
           {navigation.map((item) => (
             <a
               key={item.name}
               href={item.href}
-              className='text-sm font-semibold leading-6 text-gray-900'
+              className='text-sm font-medium leading-6 text-gray-900'
             >
               {item.name}
             </a>
           ))}
-          <a
-            href={'/admin'}
-            className='text-sm font-semibold leading-6 text-gray-900'
-          >
-            Switch to Admin
-          </a>
+          {
+            session?.user && session?.user.isAdmin &&
+            <a
+              href={'/admin'}
+              className='text-sm font-medium leading-6 text-gray-900'
+            >
+              Switch to Admin
+            </a>
+          }
         </div>
-        <div className='hidden lg:flex lg:flex-1 lg:justify-end gap-6 items-baseline'>
+        <div className='hidden lg:flex lg:flex-1 lg:justify-end gap-6 items-center'>
           <Link href={''}>
-            <Icon icon={'carbon:search'} height={22} width={22} className='text-sm font-semibold leading-6 text-gray-900' />
+            <MagnifyingGlass size={22} className='text-sm font-medium leading-6 text-gray-900' />
           </Link>
-          <Link href={''}> <Icon icon={'ph:shopping-bag-light'} height={26} width={26} className='text-sm font-semibold leading-6 text-gray-900' /></Link>
-          <Link href={'/login'}> <Icon icon={'healthicons:ui-user-profile-outline'} height={26} width={26} className='text-sm font-semibold leading-6 text-gray-900' /></Link>
-
+          <Link href={''}> <ShoppingBag size={22} className='text-sm font-medium leading-6 text-gray-900' /></Link>
+          {
+            session?.user ?
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className='p-0 cursor-pointer'>
+                    <AvatarImage src={session?.user.image} alt="@shadcn" />
+                    <AvatarFallback className=' text'>{session?.user.username.substring(0, 1).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>{session?.user.username}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <ClockCounterClockwise className="mr-2 h-4 w-4" />
+                      <span>Orders History</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Gear className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <AccountSignout />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              :
+              <Link href={'/login'}> <UserCircle size={22} className='text-sm font-medium leading-6 text-gray-900' /></Link>
+          }
         </div>
       </nav>
-      <Dialog
-        as='div'
-        className='lg:hidden'
-        open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
-      >
-        <div className='fixed inset-0 z-50' />
-        <Dialog.Panel className='fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10'>
-          <div className='flex items-center justify-between'>
-            <a
-              href='#'
-              className='-m-1.5 p-1.5'
-            >
-              <span className='sr-only'>Your Company</span>
-              <Image
-                src={logo}
-                className='h-12 w-auto'
-                alt='logo'
-              />
-            </a>
-            <button
-              type='button'
-              className='-m-2.5 rounded-md p-2.5 text-gray-700'
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className='sr-only'>Close menu</span>
-              <XMarkIcon
-                className='h-6 w-6'
-                aria-hidden='true'
-              />
-            </button>
-          </div>
-          <div className='mt-6 flow-root'>
-            <div className='-my-6 divide-y divide-gray-500/10'>
-              <div className='space-y-2 py-6'>
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                  >
-                    {item.name}
-                  </a>
-                ))}
-                <a
-                  href={'/admin'}
-                  className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                >
-                  Switch to Admin
-                </a>
-              </div>
-              <div className='py-6'>
-                <Link href={''}
-                  className='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                >Cart</Link>
-                <Link href={''} className='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'>Search</Link>
-                <Link
-                  href='/login'
-                  className='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                >
-                  Log in
-                </Link>
-              </div>
-            </div>
-          </div>
-        </Dialog.Panel>
-      </Dialog>
+
     </header>
   );
 }

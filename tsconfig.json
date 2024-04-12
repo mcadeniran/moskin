@@ -30,7 +30,8 @@
     "src/components/Icons/UserIcon.tsx",
     "src/components/Icons/CartIcon.tsx",
     "src/app/(main)/shop/[id]/page.jsx",
-    "src/app/(main)/shop/[id]/page.ts"
+    "src/app/(main)/shop/[id]/page.ts",
+    "src/components/layout/MobileNavbar.jsx"
   ],
   "exclude": ["node_modules"]
 }

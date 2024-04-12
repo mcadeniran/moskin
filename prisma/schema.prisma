@@ -13,29 +13,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username  String   @unique
+  fname     String
+  lname     String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isAdmin   Boolean  @default(false)
+}
+
 model Category {
   id        String    @id @default(uuid())
   name      String    @unique
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   products  Product[]
 
   @@index([createdAt])
 }
 
 model Product {
-  id          String    @id @default(uuid())
-  name        String    @unique
+  id          String   @id @default(uuid())
+  name        String   @unique
   description String
   price       Int
   images      String[]
-  onSale      Boolean   @default(false)
+  onSale      Boolean  @default(false)
   off         Int?
   features    String
   ingredients String
-  display     Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
-  Category    Category? @relation(fields: [categoryId], references: [id])
-  categoryId  String?
+  display     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  String
 }

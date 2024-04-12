@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import ad from '/public/ad.jpg';
 import smooth from '/public/smooth.jpg';
@@ -9,7 +8,7 @@ import userAvatar from '/public/avatar2.jpg';
 import avatar2 from '/public/avatar2 copy.jpg';
 import avatar from '/public/avatar.jpg';
 
-import {Icon} from '@iconify/react';
+// import {Icon} from '@iconify/react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import FooterSection from '@/components/layout/Footer';
@@ -92,7 +91,7 @@ const testimonials = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
   return (
     <main>
       <Header />
@@ -189,10 +188,10 @@ export default function Home() {
                   key={r.title}
                 >
                   <div className='flex items-center border rounded-xl  h-16 w-16 bg-gray-300 p-4'>
-                    <Icon
+                    {/* <Icon
                       icon={r.icon}
                       style={{fontSize: '20px', color: '##d3d3d3'}}
-                    />
+                    /> */}
                   </div>
                   <div className='flex flex-col grow'>
                     <h3 className='font-semibold text-sm sm:text-xl md:text-2xl text-gray-700'>

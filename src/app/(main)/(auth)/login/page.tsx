@@ -6,13 +6,18 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import Link from 'next/link';
+import {signIn} from 'next-auth/react';
+import {useRouter} from 'next/navigation';
+import {toast} from 'sonner';
 
 const formSchema = z.object({
-  emailAddress: z.string().email(),
-  password: z.string().min(6),
+  emailAddress: z.string().min(1, 'Email is required').email('Invalid email'),
+  password: z.string().min(1, 'Password is required').min(8, 'Password must have at least 8 characters'),
 });
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -21,8 +26,21 @@ export default function LoginPage() {
     }
   });
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log({values});
+    const signInData = await signIn('credentials', {
+      email: values.emailAddress,
+      password: values.password,
+      redirect: false
+    });
+
+    if (signInData?.error) {
+      console.log(signInData.error);
+      toast.error('Invalid email or password.');
+    } else {
+      router.push('/');
+    }
+    console.log(signInData);
   };
 
   return (

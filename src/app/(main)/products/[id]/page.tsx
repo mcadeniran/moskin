@@ -26,12 +26,16 @@ export default function ProdutPage({params}: any) {
   return (
     <div className='mx-auto max-w-2xl px-4 mb-8 sm:px-6  lg:max-w-7xl lg:px-8'>
       <div className="flex flex-col justify-between lg:flex-row gap-16 lg:items-start">
-        <div className="flex flex-col gap-6 lg:w-2/4">
-          <div className="relative w-full h-full  aspect-h-1 aspect-w-1">
-            <Image src={product.images[activeImage]} fill alt='' className="rounded-xl" style={{objectFit: 'contain'}} />
+        <div className="flex flex-col gap-6 lg:w-2/5">
+          <div className="relative w-full  aspect-h-1 aspect-w-1">
+            <Image
+              src={product.images[activeImage]}
+              alt=''
+              width={600}
+              height={400}
+              className="h-full w-full object-cover rounded-xl"
+            />
           </div>
-          <img src={product.images[activeImage]} alt=''
-            className="h-full w-full aspect-1 object-cover rounded-xl" />
           <div className="flex flex-row gap-4 h-24">
             {
               product.images.map((p, index) =>
@@ -45,17 +49,12 @@ export default function ProdutPage({params}: any) {
                   />
 
                 </div>
-                // <img src={product.images[index]}
-                // alt=''
-                // className='w-24 h-24 rounded-md cursor-pointer'
-                // key={index} onClick={() => setActiveImage(index)}
-                // />
               )
             }
           </div>
         </div>
-        <div className="flex flex-col gap-4 lg:w-2/4">
-          <div className="">
+        <div className="flex flex-col gap-4 lg:w-3/5">
+          <div className=" whitespace-pre-line">
             <span className="text-sm italic text-gray-400">{localCategory}</span>
             {/* <span className="text-sm italic text-gray-400">{product.category?.name}</span> */}
             <h3 className="mt-4 text-4xl font-serif font-semibold">{product.name}</h3>
@@ -69,12 +68,11 @@ export default function ProdutPage({params}: any) {
               <Button className='px-12 py-2'>Add to Cart</Button>
             </div>
             <p className="mt-6 font-serif text-gray-500 font-light">{product.description}</p>
-            <div className="mt-6 font-serif text-gray-500 font-light">{product.features}</div>
+            <p className="mt-6 font-medium text-xl">Features</p>
+            <div className="mt-2 font-serif text-gray-500 font-light">{product.features}</div>
             <p className="mt-6 font-medium text-xl">Active Ingredients</p>
-
             <p className="mt-2 font-serif text-gray-500 font-light">{product.ingredients}</p>
           </div>
-
         </div>
       </div >
     </div>

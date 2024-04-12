@@ -1,3 +1,10 @@
+type Category = {
+  id: string;
+  name: string;
+  creationAt: string;
+  updatedAt: string;
+};
+
 type Product = {
   id: string;
   name: string;
@@ -15,11 +22,4 @@ type Product = {
   updatedAt: string;
   category: Category;
   description: string;
-};
-
-type Category = {
-  id: string;
-  name: string;
-  creationAt: string;
-  updatedAt: string;
 };

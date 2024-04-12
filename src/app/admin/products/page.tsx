@@ -14,10 +14,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-
-
-
-
 export default async function ProductsPage() {
   const products = await db.product.findMany({include: {Category: true}});
 
@@ -28,7 +24,7 @@ export default async function ProductsPage() {
         <Link href={'/admin/products/add'} className='border rounded-xl bg-slate-800 text-white px-3 py-2'>Add New</Link>
       </div>
       {products.length == 0 ?
-        <p>No products found</p>
+        <p className='text-xl font-light p-4'>No products</p>
         :
         <Table>
           <TableCaption>A list of your available products.</TableCaption>
@@ -56,7 +52,7 @@ export default async function ProductsPage() {
                 <TableCell>{product.Category?.name}</TableCell>
                 <TableCell>₦{product.price.toLocaleString()}</TableCell>
                 <TableCell className="text-right">
-                  <Link href='' className='py-2 px-3 hover:underline '>View</Link>
+                  <Link href={'/admin/products/' + product.id} className='py-2 px-3 hover:underline '>View</Link>
                   <Link href='' className='py-2 pl-4 text-red-500 hover:underline'>Delete</Link>
                 </TableCell>
               </TableRow>

@@ -14,7 +14,7 @@ export default function AdminNavbar() {
   return (
     <div className="flex justify-between  bg-accent p-4 rounded-xl items-center mb-5">
       <div className="text-gray-700 font-bold capitalize">
-        {pageTitle}
+        {/* {pageTitle} */}
         {/* {pathname.split("/").pop()} */}
       </div>
       <div className="flex items-center gap-5">

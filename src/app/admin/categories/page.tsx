@@ -44,7 +44,7 @@ export default async function CategoriesPage() {
               </Link>
             ))
             :
-            <p className='text-xl font-light p-4'>No categoris</p>
+            <p className='text-xl font-light p-4'>No categories</p>
         }
       </div>
     </div>
