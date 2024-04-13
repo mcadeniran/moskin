@@ -82,7 +82,7 @@ export default async function Header() {
           <Link href={''}>
             <MagnifyingGlass size={22} className='text-sm font-medium leading-6 text-gray-900' />
           </Link>
-          <Link href={''}> <ShoppingBag size={22} className='text-sm font-medium leading-6 text-gray-900' /></Link>
+          <Link href={'/order'}> <ShoppingBag size={22} className='text-sm font-medium leading-6 text-gray-900' /></Link>
           {
             session?.user ?
               <DropdownMenu>

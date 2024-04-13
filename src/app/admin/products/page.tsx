@@ -39,16 +39,18 @@ export default async function ProductsPage() {
           <TableBody>
             {products.map((product) => (
               <TableRow key={product.id}>
-                <TableCell className="font-medium"><div className="flex gap-2 items-center">
-                  <Image
-                    src={product.images[0]}
-                    alt='avatar'
-                    width={40}
-                    height={40}
-                    className='rounded-full h-10 w-10 object-cover'
-                  />
-                  {product.name}
-                </div></TableCell>
+                <TableCell className="font-medium">
+                  <div className="flex gap-2 items-center">
+                    <Image
+                      src={product.images[0]}
+                      alt='avatar'
+                      width={40}
+                      height={40}
+                      className='rounded-full h-10 w-10 object-cover'
+                    />
+                    {product.name}
+                  </div>
+                </TableCell>
                 <TableCell>{product.Category?.name}</TableCell>
                 <TableCell>₦{product.price.toLocaleString()}</TableCell>
                 <TableCell className="text-right">

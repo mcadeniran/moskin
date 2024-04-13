@@ -52,7 +52,7 @@ export function MobileNavbar() {
 
         <SheetHeader className='border-t '>
           <SheetClose asChild >
-            <Link href={'#'} className='font-normal p-4  hover:bg-accent'>
+            <Link href={'/order'} className='font-normal p-4  hover:bg-accent'>
               <SheetTitle className='font-medium'>Cart</SheetTitle>
             </Link>
           </SheetClose>
