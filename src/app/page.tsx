@@ -12,6 +12,8 @@ import avatar from '/public/avatar.jpg';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import FooterSection from '@/components/layout/Footer';
+import SliderComponent from '@/components/layout/MainComponents/SliderComponent';
+import FeaturedComponent from '@/components/layout/MainComponents/FeaturedComponent';
 
 const reasons = [
   {
@@ -95,8 +97,10 @@ export default async function Home() {
   return (
     <main>
       <Header />
+      <SliderComponent />
+      <FeaturedComponent />
       <div className='mx-auto max-w-7xl py-6 sm:px-6 lg:px-8'>
-        <div className='flex items-center flex-col gap-4 md:grid md:grid-cols-2 md:gap-10'>
+        {/* <div className='flex items-center flex-col gap-4 md:grid md:grid-cols-2 md:gap-10'>
           <div className='mt-8 sm:mt-24 md:mt-32'>
             <h3 className='text-2xl sm:text-4xl md:text-6xl font-bold  text-center md:text-left'>
               Unveiling Your Natural Beauty With Our Products
@@ -128,7 +132,7 @@ export default async function Home() {
               className='rounded-xl'
             />
           </div>
-        </div>
+        </div> */}
         <div className='mt-8'>
           <p className='text-primary text-xl md:text-4xl text-center'>
             Benefits
@@ -151,6 +155,7 @@ export default async function Home() {
                   height={40}
                   width={40}
                   className='bg-transparent'
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                 />
                 <p className='mt-4 text-base md:text-lg text-gray-700'>
                   {b.title}

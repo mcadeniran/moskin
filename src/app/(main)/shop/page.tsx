@@ -32,7 +32,7 @@ export default async function ShopPage() {
               >
                 <div className='relative h-72 aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
                   <Image
-                    src={p.images.length > 1 ? p.images[0] : noimage}
+                    src={p.images.length > 0 ? p.images[0] : noimage}
                     alt={p.name}
                     sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                     className='h-full w-full rounded-md object-cover'

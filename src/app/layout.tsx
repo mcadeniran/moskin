@@ -3,6 +3,7 @@ import {Lato} from 'next/font/google';
 import './globals.css';
 import {Toaster} from '@/components/ui/sonner';
 import Provider from '@/components/Provider';
+import QueryProvider from '@/components/QueryProvider';
 
 const lato = Lato({
   subsets: ['latin'],
@@ -27,10 +28,12 @@ export default function RootLayout({
     >
       <body className={lato.className} suppressHydrationWarning={true}>
         <Provider>
-          <div>
-            {children}
-          </div>
-          <Toaster />
+          <QueryProvider>
+            <div>
+              {children}
+            </div>
+            <Toaster />
+          </QueryProvider>
         </Provider>
       </body>
     </html>

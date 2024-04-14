@@ -32,6 +32,7 @@ model Category {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   products  Product[]
+  // slug      String    @unique
 
   @@index([createdAt])
 }
@@ -51,4 +52,16 @@ model Product {
   updatedAt   DateTime @updatedAt
   Category    Category @relation(fields: [categoryId], references: [id])
   categoryId  String
+  isFeatured  Boolean  @default(false)
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  price     Int
+  status    String
+  products  Json[]
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  paymentId String?  @unique
 }

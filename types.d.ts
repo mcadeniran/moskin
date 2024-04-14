@@ -22,4 +22,5 @@ type Product = {
   updatedAt: string;
   category: Category;
   description: string;
+  isFeatured: boolean;
 };
