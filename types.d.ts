@@ -1,11 +1,11 @@
-type Category = {
+type CategoryType = {
   id: string;
   name: string;
   creationAt: string;
   updatedAt: string;
 };
 
-type Product = {
+type ProductType = {
   id: string;
   name: string;
   price: number;
@@ -23,4 +23,23 @@ type Product = {
   category: Category;
   description: string;
   isFeatured: boolean;
+};
+
+type CartItemType = {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  quantity: number;
+};
+
+type CartType = {
+  products: CartItemType[];
+  totalItems: number;
+  totalPrice: number;
+};
+
+type ActionTypes = {
+  addToCart: (item: CartItemType) => void;
+  removeFromCart: (item: CartItemType) => void;
 };

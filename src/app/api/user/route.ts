@@ -43,6 +43,7 @@ export async function POST(req: Request) {
         fname: '',
         lname: '',
         image: '',
+        phone: '',
       },
     });
 

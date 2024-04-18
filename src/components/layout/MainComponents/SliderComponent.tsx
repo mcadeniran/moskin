@@ -1,23 +1,24 @@
 'use client';
 import {Button} from '@/components/ui/button';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, {useEffect, useState} from 'react';
 
 const sliders = [
   {
     id: 1,
     title: 'Unveiling Your Natural Beauty With Our Products',
-    image: '/cream_tube.jpg'
+    image: '/f1.jpeg'
   },
   {
     id: 2,
     title: 'Elevating your Radiance: Empower your Glow with Our Formulas',
-    image: '/ad.jpg'
+    image: '/f2.png'
   },
   {
     id: 3,
     title: "Unlocking Inner Brilliance: Enhance Your Aura with Our Collection",
-    image: '/smooth.jpg'
+    image: '/f3.jpeg'
   },
 ];
 
@@ -36,7 +37,7 @@ export default function SliderComponent() {
       {/* Text Container */}
       <div className=" items-center flex justify-center flex-col gap-8 font-bold flex-1">
         <h1 className="text-3xl text-center uppercase p-4 md:p-10 md:text-4xl lg:text-5xl">{sliders[currentSlide].title}</h1>
-        <Button className='px-8 py-4'>Shop</Button>
+        <Link href={'/shop'} className='px-8 py-4 bg-slate-800 rounded-lg text-white'>Shop Now</Link>
       </div>
       {/* Image Container */}
       <div className=" w-full relative flex-1">

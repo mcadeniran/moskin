@@ -21,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import AccountSignout from '../AccountSignout';
+import CartComponent from '../CartComponent';
 
 
 
@@ -82,7 +83,7 @@ export default async function Header() {
           <Link href={''}>
             <MagnifyingGlass size={22} className='text-sm font-medium leading-6 text-gray-900' />
           </Link>
-          <Link href={'/order'}> <ShoppingBag size={22} className='text-sm font-medium leading-6 text-gray-900' /></Link>
+          <CartComponent />
           {
             session?.user ?
               <DropdownMenu>
@@ -92,25 +93,27 @@ export default async function Header() {
                     <AvatarFallback className=' text'>{session?.user.username.substring(0, 1).toUpperCase()}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
+                <DropdownMenuContent className="w-56 mr-4">
                   <DropdownMenuLabel>{session?.user.username}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <Link href={'/profile'} className=''>
+                      <DropdownMenuItem className='py-4 cursor-pointer'>
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profiles</span>
+                      </DropdownMenuItem>
+                    </Link>
+                    <DropdownMenuItem className='py-4 cursor-pointer'>
                       <ClockCounterClockwise className="mr-2 h-4 w-4" />
                       <span>Orders History</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem className='py-4  cursor-pointer'>
                       <Gear className="mr-2 h-4 w-4" />
                       <span>Settings</span>
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className='py-4 cursor-pointer'>
                     <AccountSignout />
                   </DropdownMenuItem>
                 </DropdownMenuContent>

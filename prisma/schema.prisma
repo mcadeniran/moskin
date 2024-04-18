@@ -14,16 +14,33 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String    @id @default(uuid())
+  email     String    @unique
   password  String
-  username  String   @unique
+  username  String    @unique
   fname     String
   lname     String
   image     String
+  phone     String?
+  addresses Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  isAdmin   Boolean   @default(false)
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  title     String
+  house     String
+  street    String
+  city      String
+  state     String
+  country   String
+  postal    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  isAdmin   Boolean  @default(false)
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 model Category {

@@ -1,20 +1,41 @@
 'use client';
 
 import {Button} from '@/components/ui/button';
+import {useCartStore} from '@/lib/store';
 import {Product} from '@prisma/client';
 import {useQuery} from '@tanstack/react-query';
 import Image from 'next/image';
 import {useEffect, useState} from 'react';
+import {toast} from 'sonner';
 
 export default function ProdutPage({params}: any) {
   const pid = params.id;
   const [activeImage, setActiveImage] = useState<number>(0);
+  const [quantity, setQuantity] = useState(1);
+
+  const {addToCart} = useCartStore();
+
+  useEffect(() => {
+    useCartStore.persist.rehydrate();
+  }, []);
 
   const {isLoading, error, data} = useQuery({
     queryKey: ['product'],
     queryFn: () =>
       fetch('/api/product/' + pid).then(res => res.json())
   });
+
+  const handleCartAdd = () => {
+    addToCart({
+      id: data.id,
+      name: data.name,
+      image: data.images[0],
+      price: data.price,
+      quantity: quantity,
+
+    });
+    toast.success('Product added to cart.');
+  };
 
   if (isLoading) return 'Loading...';
 
@@ -65,11 +86,23 @@ export default function ProdutPage({params}: any) {
             <p className="mt-6 font-medium text-gray-700 text-xl">₦{(data.price).toLocaleString()}</p>
             <div className="mt-6 flex flex-row items-center gap-16">
               <div className="flex flex-row items-center">
-                <button className="bg-gray-200 text-primary py-2 px-5 rounded-lg text-2xl">-</button>
-                <span className="py-2 px-5 rounded-lg text-2xl">1</span>
-                <button className="bg-gray-200 text-primary py-2 px-5 rounded-lg text-2xl">+</button>
+                <button
+                  className="bg-gray-200 text-primary py-2 px-5 rounded-lg text-2xl"
+                  onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
+                >
+                  -
+                </button>
+                <span className="py-2 px-5 rounded-lg text-2xl">{quantity}</span>
+                <button
+                  className="bg-gray-200 text-primary py-2 px-5 rounded-lg text-2xl"
+                  onClick={() => setQuantity((prev) => prev + 1)}
+                >
+                  +
+                </button>
               </div>
-              <Button className='px-12 py-2'>Add to Cart</Button>
+              <Button className='px-12 py-2'
+                onClick={handleCartAdd}
+              >Add to Cart</Button>
             </div>
             <p className="mt-6 font-serif text-gray-500 font-light">{data.description}</p>
             <p className="mt-6 font-medium text-xl">Usage</p>
