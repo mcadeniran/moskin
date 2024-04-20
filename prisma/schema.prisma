@@ -18,10 +18,10 @@ model User {
   email     String    @unique
   password  String
   username  String    @unique
-  fname     String
-  lname     String
-  image     String
-  phone     String?
+  fname     String    @default("")
+  lname     String    @default("")
+  image     String    @default("")
+  phone     String    @default("")
   addresses Address[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -39,8 +39,10 @@ model Address {
   postal    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+  User      User     @relation(fields: [userEmail], references: [email])
+  userEmail String
+
+  @@unique([userEmail, title])
 }
 
 model Category {

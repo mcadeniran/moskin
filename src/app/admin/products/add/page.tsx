@@ -32,7 +32,7 @@ const formSchema = z.object({
   display: z.boolean(),
 });
 export default function AddProductPage() {
-  const [cats, setCats] = useState<Category[]>([]);
+  const [cats, setCats] = useState<CategoryType[]>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
