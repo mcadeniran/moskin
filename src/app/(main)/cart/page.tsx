@@ -25,7 +25,7 @@ export default function OrderPage() {
   }, []);
 
   return (
-    <div className='mx-auto min-h-[calc(100vh-130px)] max-w-7xl py-6  px-4 sm:px-6 lg:px-8' >
+    <div className='mx-auto min-h-[calc(100vh-205px)] max-w-7xl py-6  px-4 sm:px-6 lg:px-8' >
       <div className='flex flex-col lg:flex-row gap-4'>
         <div className="flex flex-col basis-3/4">
           <div className="bg-accent rounded-xl p-4">

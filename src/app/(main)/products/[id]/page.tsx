@@ -7,6 +7,7 @@ import {useQuery} from '@tanstack/react-query';
 import Image from 'next/image';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
+import ProductLoading from './ProductLoading';
 
 export default function ProdutPage({params}: any) {
   const pid = params.id;
@@ -37,14 +38,15 @@ export default function ProdutPage({params}: any) {
     toast.success('Product added to cart.');
   };
 
-  if (isLoading) return 'Loading...';
+  if (isLoading) return <ProductLoading />;
 
   if (error) return 'No product found!';
 
   if (!data) return <div className='mx-auto max-w-2xl px-4  sm:px-6  lg:max-w-7xl lg:px-8'>No Product found!</div>;
 
   return (
-    <div className='mx-auto max-w-2xl px-4 mb-8 sm:px-6  lg:max-w-7xl lg:px-8'>
+
+    <div className='min-h-[calc(100vh-205px)] mx-auto max-w-2xl px-4 mb-8 sm:px-6  lg:max-w-7xl lg:px-8'>
       <div className="flex flex-col justify-between lg:flex-row gap-16 lg:items-start">
         <div className="flex flex-col gap-6 lg:w-2/5">
           <div className="relative w-full  aspect-h-1 aspect-w-1">

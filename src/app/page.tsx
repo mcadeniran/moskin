@@ -201,6 +201,7 @@ export default async function Home() {
                     src={t.image}
                     alt={t.alt}
                     className='rounded-full mt-4 h-12 w-12 md:h-16 md:w-16 object-cover'
+                    sizes='width:auto'
                   />
                   <p className='mt-4 font-light text-sm'>{t.author}</p>
                   <p className='mt-2 text-xs font-extralight text-gray-400'>

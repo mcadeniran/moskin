@@ -17,7 +17,7 @@ export default async function ProfilePage() {
 
 
   return (
-    <div className='mx-auto min-h-[calc(100vh-130px)] max-w-7xl px-4 lg:py-6 sm:px-6 lg:px-8'>
+    <div className='mx-auto min-h-[calc(100vh-175px)] max-w-7xl px-4 lg:py-6 sm:px-6 lg:px-8'>
       <div className="flex flex-col gap-6">
         <div className="flex flex-row grow gap-4 justify-start items-start p-4  rounded-lg bg-accent shadow-sm">
           {/* Image Container */}

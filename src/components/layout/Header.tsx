@@ -1,4 +1,4 @@
-import logo from '/public/logo.png';
+import logo from '/public/logo1.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import {MobileNavbar} from './MobileNavbar';
@@ -43,7 +43,7 @@ export default async function Header() {
       >
         <div className='flex lg:flex-1'>
           <a
-            href='#'
+            href='/'
             className='-m-1.5 p-1.5'
           >
             <span className='sr-only'>MOS</span>
