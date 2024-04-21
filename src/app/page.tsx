@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import ad from '/public/ad.jpg';
 import smooth from '/public/smooth.jpg';
 import natural from '/public/natural.png';
 import organic from '/public/organic.png';
@@ -8,34 +7,33 @@ import userAvatar from '/public/avatar2.jpg';
 import avatar2 from '/public/avatar2 copy.jpg';
 import avatar from '/public/avatar.jpg';
 
-// import {Icon} from '@iconify/react';
-import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import FooterSection from '@/components/layout/Footer';
 import SliderComponent from '@/components/layout/MainComponents/SliderComponent';
 import FeaturedComponent from '@/components/layout/MainComponents/FeaturedComponent';
+import {Palette, Tag, ThumbsUp, Truck} from '@phosphor-icons/react/dist/ssr';
 
 const reasons = [
   {
-    icon: 'ic:outline-color-lens',
+    icon: <Palette size={32} weight="light" />,
     title: 'Unique Design',
     description:
       'We understand that navigating the beauty world can be over whelming at times.',
   },
   {
-    icon: 'game-icons:thumb-up',
+    icon: <ThumbsUp size={32} weight="light" />,
     title: 'Quality Products',
     description:
       'Our dedicated customer support team is always available to assist you with any queries, concerns.',
   },
   {
-    icon: 'ion:pricetags-outline',
+    icon: <Tag size={32} weight="light" />,
     title: 'Affordable Prices',
     description:
       'We understand that navigating the beauty world can be over whelming at times.',
   },
   {
-    icon: 'carbon:delivery-parcel',
+    icon: <Truck size={32} weight="light" />,
     title: 'Fast Delivery',
     description:
       'Our dedicated customer support team is always available to assist you with any queries, concerns.',
@@ -99,158 +97,118 @@ export default async function Home() {
       <Header />
       <SliderComponent />
       <FeaturedComponent />
-      <div className='mx-auto max-w-7xl py-6 sm:px-6 lg:px-8'>
-        {/* <div className='flex items-center flex-col gap-4 md:grid md:grid-cols-2 md:gap-10'>
-          <div className='mt-8 sm:mt-24 md:mt-32'>
-            <h3 className='text-2xl sm:text-4xl md:text-6xl font-bold  text-center md:text-left'>
-              Unveiling Your Natural Beauty With Our Products
-            </h3>
-            <p className='text-center px-4 sm:px-0 md:text-left text-sm sm:text-xl mt-12 text-gray-700 font-light '>
-              Our products embodies the essence of beauty, elegance, and
-              transformation. It is a symbol that encapsulates our {"brand's"}{' '}
-              commitment to enhancing natural beauty and empowering individuals
-              to express themselves confidently.
+      <div className="bg-accent mt-4">
+        {/* Benefit */}
+        <div className='mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 '>
+          <div className='mt-6'>
+            <p className='text-primary text-xl md:text-4xl text-center'>
+              Benefits
             </p>
-            <div className='flex justify-center md:justify-start mt-8'>
-              <Link
-                href={'/shop'}
-                className='border bg-primary border-primary rounded-full py-2 px-4'
-              >
-                Shop Now
-              </Link>
+            <div className='flex justify-center mt-6'>
+              <p className='text-center w-96 text-gray-500'>
+                Our plant-based ingredients are great options for acheiving health
+                and glowing skin.
+              </p>
             </div>
-          </div>
-          <div className='-mt-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden'>
-            <Image
-              src={ad}
-              alt='User Avatar'
-              sizes='100vw'
-              style={{
-                width: '100%',
-                height: 'auto',
-              }}
-              className='rounded-xl'
-            />
-          </div>
-        </div> */}
-        <div className='mt-8'>
-          <p className='text-primary text-xl md:text-4xl text-center'>
-            Benefits
-          </p>
-          <div className='flex justify-center mt-6'>
-            <p className='text-center w-96 text-gray-500'>
-              Our plant-based ingredients are great options for acheiving health
-              and glowing skin.
-            </p>
-          </div>
-          <div className='grid md:grid-cols-3 mt-8 gap-4'>
-            {benefits.map((b) => (
-              <div
-                className='bg-gray-100  rounded-xl  p-4'
-                key={b.title}
-              >
-                <Image
-                  src={b.image}
-                  alt={b.alt}
-                  height={40}
-                  width={40}
-                  className='bg-transparent'
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                />
-                <p className='mt-4 text-base md:text-lg text-gray-700'>
-                  {b.title}
-                </p>
-                <p className='mt-4 text-xs md:text-sm text-gray-400 font-light'>
-                  {b.details}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className='mt-16'>
-          <p className='text-xl sm:text-2xl md:text-4xl font-semibold  text-center mb-12'>
-            Embrace the Magic of MOS
-          </p>
-          <div className='flex flex-col md:grid md:grid-cols-2 md:gap-4'>
-            <div className=' -mt-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden'>
-              <Image
-                src={smooth}
-                alt='User Avatar'
-                sizes='100vw'
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                }}
-                className='rounded-xl '
-              />
-            </div>
-
-            <div className=''>
-              {reasons.map((r) => (
+            <div className='grid lg:grid-cols-3 mt-6 gap-4'>
+              {benefits.map((b) => (
                 <div
-                  className='flex flex-row gap-4 pb-8 sm:pb-12 px-4'
-                  key={r.title}
+                  className='bg-slate-200  rounded-xl  p-4'
+                  key={b.title}
                 >
-                  <div className='flex items-center border rounded-xl  h-16 w-16 bg-gray-300 p-4'>
-                    {/* <Icon
-                      icon={r.icon}
-                      style={{fontSize: '20px', color: '##d3d3d3'}}
-                    /> */}
-                  </div>
-                  <div className='flex flex-col grow'>
-                    <h3 className='font-semibold text-sm sm:text-xl md:text-2xl text-gray-700'>
-                      {r.title}
-                    </h3>
-                    <p className='text-sm md:text-base sm:text-xl mt-1 text-gray-400  font-light'>
-                      {r.description}
-                    </p>
-                  </div>
+                  <Image
+                    src={b.image}
+                    alt={b.alt}
+                    height={40}
+                    width={40}
+                    className='bg-transparent'
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                  />
+                  <p className='mt-4 text-base md:text-lg text-gray-700'>
+                    {b.title}
+                  </p>
+                  <p className='mt-4 text-xs md:text-sm text-gray-400 font-light'>
+                    {b.details}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-
-        <div className='mt-16 bg-gray-200 p-8'>
-          <p className='text-primary text-xl md:text-4xl text-center'>
-            Testimonials
-          </p>
-          <div className='mt-4 grid md:grid-cols-2'>
-            <div className='flex grow'>
-              <p className='text-lg font-light text-black w-auto'>
-                See what others are saying about the transaformative benefits of
-                our natural ingredients
-              </p>
-            </div>
-            <div className='flex justify-end'>
-              <a href='#'>
-                <span className=' hover:underline hover:text-primary cursor-pointer'>
-                  View all
-                </span>
-              </a>{' '}
+          {/* Magic */}
+          <div className='mt-16'>
+            <p className='text-primary text-xl md:text-4xl text-center'>
+              Embrace the Magic of MOS
+            </p>
+            <div className='flex flex-col gap-6 lg:flex-row justify-start items-start mt-6'>
+              <div className='relative w-full h-auto basis-2/5'>
+                <Image
+                  src={smooth}
+                  alt='User Avatar'
+                  sizes='100vw'
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                  }}
+                  className='rounded-xl '
+                />
+              </div>
+              <div className=''>
+                {reasons.map((r) => (
+                  <div
+                    className='flex flex-row gap-4 pb-8 sm:pb-12'
+                    key={r.title}
+                  >
+                    <div className='flex items-center border rounded-xl  h-16 w-16 bg-gray-300 p-4'>
+                      {r.icon}
+                    </div>
+                    <div className='flex flex-col grow'>
+                      <h3 className='font-medium text-xl lg:text-2xl text-gray-700'>
+                        {r.title}
+                      </h3>
+                      <p className='text-base lg:text-lg mt-1 text-gray-400  font-light'>
+                        {r.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-          <div className='mt-6 grid md:grid-cols-3 gap-4'>
-            {testimonials.map((t) => (
-              <div
-                key={t.alt}
-                className='bg-gray-100 p-6 rounded-md flex flex-col items-center'
-              >
-                <p className='text-center font-extralight text-xs text-gray-700'>
-                  {t.details}
-                </p>
-                <Image
-                  src={t.image}
-                  alt={t.alt}
-                  className='rounded-full mt-4 h-12 w-12 md:h-16 md:w-16 object-cover'
-                />
-                <p className='mt-4 font-light text-sm'>{t.author}</p>
-                <p className='mt-2 text-xs font-extralight text-gray-400'>
-                  {t.handle}
+
+          <div className='mt-16 bg-slate-100 '>
+            <p className='text-primary text-xl md:text-4xl text-center'>
+              Testimonials
+            </p>
+            <div className='mt-4 grid md:grid-cols-2'>
+              <div className='flex grow'>
+                <p className='text-lg font-light text-black w-auto'>
+                  See what others are saying about the transaformative benefits of
+                  our natural ingredients
                 </p>
               </div>
-            ))}
+
+            </div>
+            <div className='mt-6 grid md:grid-cols-3 gap-4 '>
+              {testimonials.map((t) => (
+                <div
+                  key={t.alt}
+                  className='bg-slate-200 p-6 rounded-md flex flex-col items-center'
+                >
+                  <p className='text-center font-light text-xs text-gray-700'>
+                    {t.details}
+                  </p>
+                  <Image
+                    src={t.image}
+                    alt={t.alt}
+                    className='rounded-full mt-4 h-12 w-12 md:h-16 md:w-16 object-cover'
+                  />
+                  <p className='mt-4 font-light text-sm'>{t.author}</p>
+                  <p className='mt-2 text-xs font-extralight text-gray-400'>
+                    {t.handle}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

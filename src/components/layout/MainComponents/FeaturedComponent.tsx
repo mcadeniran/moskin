@@ -1,18 +1,20 @@
 'use client';
 import {featuredProducts} from '@/app/data';
 import {Button} from '@/components/ui/button';
+import {Product} from '@prisma/client';
 import {useQuery} from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
+import FeaturedLoadingComponent from './FeaturedLoadingComponent';
 
 export default function FeaturedComponent() {
   const {isLoading, error, data} = useQuery({
     queryKey: ['featured'],
     queryFn: () =>
-      fetch('/api/featured/').then(res => res.json())
+      fetch('/api/featured').then(res => res.json())
   });
 
-  if (isLoading) return '';
+  if (isLoading) return <FeaturedLoadingComponent />;
 
   if (error) return '';
 
