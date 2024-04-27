@@ -1,10 +1,10 @@
 import { db } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
-import { hash } from 'bcrypt';
-import { getAuthSession } from '@/lib/auth';
+import { hash } from 'bcryptjs';
+import { auth } from '@/auth';
 
 export async function GET() {
-  const userSession = await getAuthSession();
+  const userSession = await auth();
 
   if (!userSession) {
     return NextResponse.json(
@@ -30,7 +30,7 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
-  const userSession = await getAuthSession();
+  const userSession = await auth();
 
   if (!userSession) {
     return NextResponse.json(

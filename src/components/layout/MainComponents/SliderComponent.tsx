@@ -12,25 +12,25 @@ const sliders = [
   },
   {
     id: 2,
-    title: 'Elevating your Radiance: Empower your Glow with Our Formulas',
-    image: '/f2.png'
+    title: "Unlocking Inner Brilliance: Enhance Your Aura with Our Collection",
+    image: '/bg_edited.png'
   },
   {
     id: 3,
-    title: "Unlocking Inner Brilliance: Enhance Your Aura with Our Collection",
+    title: 'Elevating your Radiance: Empower your Glow with Our Formulas',
     image: '/f3.jpeg'
   },
 ];
 
 export default function SliderComponent() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(1);
 
-  useEffect(() => {
-    const interval = setInterval(
-      () => setCurrentSlide(prev => (prev === sliders.length - 1 ? 0 : prev + 1)),
-      5000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(
+  //     () => setCurrentSlide(prev => (prev === sliders.length - 1 ? 0 : prev + 1)),
+  //     5000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <div className='flex flex-col h-[calc(100vh-4.5rem)] md:h-[calc(100vh-5.2rem)] lg:flex-row'>

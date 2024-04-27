@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import smooth from '/public/smooth.jpg';
+import smooth from '/public/embrace.jpeg';
+// import smooth from '/public/smooth.jpg';
 import natural from '/public/natural.png';
 import organic from '/public/organic.png';
 import cruelty from '/public/cruelty.png';
@@ -97,10 +98,10 @@ export default async function Home() {
       <Header />
       <SliderComponent />
       <FeaturedComponent />
-      <div className="bg-accent mt-4">
+      <div className=" mt-4">
         {/* Benefit */}
-        <div className='mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 '>
-          <div className='mt-6'>
+        <div className='mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:px-8 '>
+          <div className='mt-6 rounded-xl'>
             <p className='text-primary text-xl md:text-4xl text-center'>
               Benefits
             </p>
@@ -110,10 +111,10 @@ export default async function Home() {
                 and glowing skin.
               </p>
             </div>
-            <div className='grid lg:grid-cols-3 mt-6 gap-4'>
+            <div className='grid md:grid-cols-3 mt-6 gap-4'>
               {benefits.map((b) => (
                 <div
-                  className='bg-slate-200  rounded-xl  p-4'
+                  className='bg-accent rounded-xl  p-4'
                   key={b.title}
                 >
                   <Image
@@ -139,7 +140,7 @@ export default async function Home() {
             <p className='text-primary text-xl md:text-4xl text-center'>
               Embrace the Magic of MOS
             </p>
-            <div className='flex flex-col gap-6 lg:flex-row justify-start items-start mt-6'>
+            <div className='flex flex-col gap-6 md:flex-row justify-start items-start mt-8'>
               <div className='relative w-full h-auto basis-2/5'>
                 <Image
                   src={smooth}
@@ -155,17 +156,17 @@ export default async function Home() {
               <div className=''>
                 {reasons.map((r) => (
                   <div
-                    className='flex flex-row gap-4 pb-8 sm:pb-12'
+                    className='flex flex-row gap-4 pb-4 lg:pb-8'
                     key={r.title}
                   >
-                    <div className='flex items-center border rounded-xl  h-16 w-16 bg-gray-300 p-4'>
+                    <div className='flex items-center  rounded-xl  h-16 w-16 bg-accent p-4'>
                       {r.icon}
                     </div>
                     <div className='flex flex-col grow'>
-                      <h3 className='font-medium text-xl lg:text-2xl text-gray-700'>
+                      <h3 className='font-medium text-base lg:text-lg text-gray-700'>
                         {r.title}
                       </h3>
-                      <p className='text-base lg:text-lg mt-1 text-gray-400  font-light'>
+                      <p className='text-sm lg:text-base mt-1 text-gray-400  font-light'>
                         {r.description}
                       </p>
                     </div>
@@ -175,24 +176,22 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className='mt-16 bg-slate-100 '>
+          <div className='mt-16 '>
             <p className='text-primary text-xl md:text-4xl text-center'>
               Testimonials
             </p>
-            <div className='mt-4 grid md:grid-cols-2'>
-              <div className='flex grow'>
-                <p className='text-lg font-light text-black w-auto'>
-                  See what others are saying about the transaformative benefits of
-                  our natural ingredients
-                </p>
-              </div>
-
+            <div className='flex justify-center mt-6'>
+              <p className='text-center w-96 text-gray-500'>
+                See what others are saying about the transaformative benefits of
+                our natural ingredients
+              </p>
             </div>
+
             <div className='mt-6 grid md:grid-cols-3 gap-4 '>
               {testimonials.map((t) => (
                 <div
                   key={t.alt}
-                  className='bg-slate-200 p-6 rounded-md flex flex-col items-center'
+                  className='bg-accent p-6 rounded-md flex flex-col items-center'
                 >
                   <p className='text-center font-light text-xs text-gray-700'>
                     {t.details}

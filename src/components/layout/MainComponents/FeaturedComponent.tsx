@@ -6,6 +6,8 @@ import {useQuery} from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
 import FeaturedLoadingComponent from './FeaturedLoadingComponent';
+import {ArrowsOut, ShoppingCart} from '@phosphor-icons/react/dist/ssr';
+import Link from 'next/link';
 
 export default function FeaturedComponent() {
   const {isLoading, error, data} = useQuery({
@@ -19,28 +21,49 @@ export default function FeaturedComponent() {
   if (error) return '';
 
   return (
-    <div className='w-screen overflow-x-scroll'>
-      {/* Wrapper */}
-      <div className="w-max flex">
-        {/* Single Item */}
-        {
-          data.map((item: Product) => (
-            <div className="w-screen h-[60vh] flex flex-col items-center justify-around p-4 hover:bg-slate-100 transition-all duration-300 md:w-[50vw] xl:w-[33vw] xl:h-[90vh]" key={item.id}>
-              {/* Image Container */}
-              <div className="relative flex-1 w-full">
-                <Image src={item.images[0]} alt='' fill className='object-cover' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
-              </div>
-              {/* Text Container */}
-              <div className="flex-1 flex flex-col justify-center items-center gap-4">
-                <h1 className="text-xl font-medium uppercase xl:text-2xl 2xl:text-3xl">{item.name}</h1>
-                <p className="p-4 text-sm text-center 2xl:p-8 line-clamp-4 font-light">{item.description}</p>
-                <span className="text-xl font-medium">₦{item.price}</span>
-                <Button>Add to Cart</Button>
-              </div>
-            </div>
-          ))
-        }
+    <>
+      <div className="mt-8 px-4 flex items-center justify-center gap-2">
+        <h1 className=' text-slate-800 font-medium text-lg md:text-2xl'>Best Sellers</h1>
+        <hr className='grow bg-slate-800' />
       </div>
-    </div>
+      <div className='w-screen overflow-x-scroll'>
+        {/* Wrapper */}
+        <div className="w-max flex">
+          {/* Single Item */}
+          {
+            data.map((item: Product) => (
+              <div className="w-screen h-[50vh] flex flex-col items-center justify-around p-4 
+            hover:bg-gray-100/50 transition-all duration-300 md:w-[50vw] xl:w-[33vw] xl:h-[80vh]" key={item.id}>
+                {/* Image Container */}
+                <div className="relative basis-4/5 w-full">
+                  <Image src={item.images[0]} alt='' fill className='object-cover' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
+                </div>
+                {/* Text Container */}
+                <div className="basis-1/5 flex flex-col justify-between py-4 gap-4 ">
+                  <div className="flex flex-col">
+                    <h1 className=" text-base font-bold uppercase xl:text-lg 2xl:text-xl">{item.name}</h1>
+                    <span className="text-sm xl:text-base 2xl:text-lg font-semibold pt-2">₦{item.price}</span>
+                  </div>
+                  <p className="line-clamp-3 text-xs xl:text-small 2xl:text-base font-light">{item.description.trim()}</p>
+                  <div className="flex items-center gap-4 justify-between">
+                    <div className="border p-2 flex items-center rounded-lg cursor-pointer">
+                      <Link
+                        key={item.id}
+                        href={'/products/' + item.id}
+                        className='group'
+                      >
+                        <ArrowsOut size={22} weight="light" />
+                      </Link>
+                    </div>
+                    <Button size='sm' className='p-2 bg-slate-800 grow'><ShoppingCart size={18} weight="light" className='mr-2' />Add to cart</Button>
+                  </div>
+
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </>
   );
 }

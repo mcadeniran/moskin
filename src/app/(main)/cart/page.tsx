@@ -17,7 +17,7 @@ import {
 import {useCartStore} from '@/lib/store';
 
 
-export default function OrderPage() {
+export default function CartPage() {
   const {products, totalItems, totalPrice, removeFromCart} = useCartStore();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function OrderPage() {
   }, []);
 
   return (
-    <div className='mx-auto min-h-[calc(100vh-205px)] max-w-7xl py-6  px-4 sm:px-6 lg:px-8' >
+    <div className='mx-auto min-h-[calc(100vh-180px)] max-w-7xl pt-6  px-4 sm:px-6 lg:px-8' >
       <div className='flex flex-col lg:flex-row gap-4'>
         <div className="flex flex-col basis-3/4">
           <div className="bg-accent rounded-xl p-4">
@@ -104,15 +104,11 @@ export default function OrderPage() {
               </div>
               <div className="flex justify-between mt-1">
                 <p className="text-xs font-light">Delivery</p>
-                <p className="text-sm font-normal">₦2,700</p>
-              </div>
-              <div className="flex justify-between mt-1">
-                <p className="text-xs font-light">Tax</p>
                 <p className="text-sm font-normal">₦3,000</p>
               </div>
               <div className="flex justify-between mt-2">
                 <p className="text-xs font-light">Total</p>
-                <p className="text-sm font-normal">₦{totalPrice.toLocaleString()}</p>
+                <p className="text-sm font-normal">₦{totalPrice === 0 ? 0 : (totalPrice + 3000).toLocaleString()}</p>
               </div>
             </div>
           </div>

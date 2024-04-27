@@ -1,6 +1,6 @@
 'use client';
 import {useCartStore} from '@/lib/store';
-import {ShoppingBag} from '@phosphor-icons/react/dist/ssr';
+import {ShoppingBag, ShoppingBagOpen} from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
 import React, {useEffect} from 'react';
 
@@ -13,8 +13,8 @@ export default function CartComponent() {
 
   return (
     <Link href={'/cart'}>
-      <div className="relative inline-flex items-center text-center">
-        <ShoppingBag
+      <div className="relative mt-2 inline-flex items-center text-center">
+        <ShoppingBagOpen
           size={24}
           className='text-sm font-medium leading-6 text-gray-900'
         />

@@ -1,17 +1,25 @@
 'use client';
 
+import {signOut} from "@/auth";
 import {SignOut} from "@phosphor-icons/react/dist/ssr";
-import {signOut} from "next-auth/react";
+import {Button} from "./ui/button";
+import {logout} from "@/actions/logout";
+// import {signOut} from "next-auth/react";
 
-function AccountSignout() {
+interface AccountSignoutProps {
+  children?: React.ReactNode;
+}
+
+
+function AccountSignout({children}: AccountSignoutProps) {
+  const onClick = () => {
+    logout();
+  };
+
   return (
-    <div className="flex items-center" onClick={() => signOut({
-      redirect: true,
-      callbackUrl: `${window.location.origin}/login`
-    })}>
-      <SignOut className="mr-2 h-4 w-4" />
-      <span>Log out</span>
-    </div>
+    <span onClick={onClick} className="py-4 px-2 cursor-pointer flex items-center hover:bg-accent">
+      {children}
+    </span>
   );
 }
 

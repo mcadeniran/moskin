@@ -1,10 +1,10 @@
 import { db } from '@/lib/db';
 import { NextResponse } from 'next/server';
-import { getAuthSession } from '@/lib/auth';
 import { Address } from '@prisma/client';
+import { auth } from '@/auth';
 
 export async function GET() {
-  const userSession = await getAuthSession();
+  const userSession = await auth();
 
   if (!userSession) {
     return NextResponse.json(
@@ -28,7 +28,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const userSession = await getAuthSession();
+  const userSession = await auth();
 
   if (!userSession) {
     return NextResponse.json(
@@ -36,7 +36,6 @@ export async function POST(req: Request) {
       { status: 401 }
     );
   }
-  // console.log(userSession.user);
 
   const body: Address = await req.json();
 

@@ -1,23 +1,51 @@
-import { withAuth, NextRequestWithAuth } from 'next-auth/middleware';
-import { NextResponse } from 'next/server';
+import NextAuth from 'next-auth';
+import authConfig from '@/auth.config';
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  publicRoutes,
+  publicNestedRoutes,
+  allowedApiPrefix,
+} from '@/routes';
 
-export default withAuth(
-  function middleware(request: NextRequestWithAuth) {
-    // console.log(request.nextUrl.pathname);
-    // console.log(request.nextauth.token);
+const { auth } = NextAuth(authConfig);
 
-    if (
-      request.nextUrl.pathname.startsWith('/admin') &&
-      request.nextauth.token?.isAdmin === false
-    ) {
-      return NextResponse.rewrite(new URL('/denied', request.url));
-    }
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
+export default auth((req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
+
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isAllowedApiRoute = nextUrl.pathname.startsWith(allowedApiPrefix);
+  const isPublicNestedRoute = nextUrl.pathname.startsWith(publicNestedRoutes);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+  // Should be accessible without authentication
+  if (isApiAuthRoute) {
+    return null;
   }
-);
 
-export const config = { matcher: ['/admin'] };
+  if (isAllowedApiRoute) {
+    return null;
+  }
+
+  // Should be only accessible without authentication
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return null;
+  }
+
+  // Requires authentication to access
+  if (!isLoggedIn && !isPublicRoute && !isPublicNestedRoute) {
+    return Response.redirect(new URL('/login', nextUrl));
+  }
+
+  return null;
+});
+
+export const config = {
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+};

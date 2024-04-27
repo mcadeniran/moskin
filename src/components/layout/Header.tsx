@@ -2,9 +2,8 @@ import logo from '/public/logo1.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import {MobileNavbar} from './MobileNavbar';
-import {ClockCounterClockwise, Gear, MagnifyingGlass, ShoppingBag, User, UserCircle} from "@phosphor-icons/react/dist/ssr";
-import {authOptions} from '@/lib/auth';
-import {getServerSession} from 'next-auth';
+import {ClockCounterClockwise, Gear, MagnifyingGlass, Power, ShoppingBag, SignIn, User, UserCircle} from "@phosphor-icons/react/dist/ssr";
+
 import {
   Avatar,
   AvatarFallback,
@@ -22,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import AccountSignout from '../AccountSignout';
 import CartComponent from '../CartComponent';
+import {auth, signOut} from '@/auth';
 
 
 
@@ -32,9 +32,7 @@ const navigation = [
 ];
 
 export default async function Header() {
-  const session = await getServerSession(authOptions);
-  // console.log(session);
-
+  const session = await auth();
   return (
     <header className='inset-x-0 top-0 z-50 bg-secondary sticky bg-white'>
       <nav
@@ -80,16 +78,16 @@ export default async function Header() {
           }
         </div>
         <div className='hidden lg:flex lg:flex-1 lg:justify-end gap-6 items-center'>
-          <Link href={''}>
+          {/* <Link href={''}>
             <MagnifyingGlass size={22} className='text-sm font-medium leading-6 text-gray-900' />
-          </Link>
+          </Link> */}
           <CartComponent />
           {
             session?.user ?
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className='p-0 cursor-pointer'>
-                    <AvatarImage src={session?.user.image} alt="@shadcn" />
+                    <AvatarImage src={session?.user.image} className=' object-cover' alt="@shadcn" />
                     <AvatarFallback className=' text'>{session?.user.username.substring(0, 1).toUpperCase()}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -97,12 +95,12 @@ export default async function Header() {
                   <DropdownMenuLabel>{session?.user.username}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <Link href={'/profile'} className=''>
-                      <DropdownMenuItem className='py-4 cursor-pointer'>
+                    <DropdownMenuItem className='py-4 cursor-pointer' asChild>
+                      <Link href={'/profile'} className=''>
                         <User className="mr-2 h-4 w-4" />
                         <span>Profiles</span>
-                      </DropdownMenuItem>
-                    </Link>
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem className='py-4 cursor-pointer'>
                       <ClockCounterClockwise className="mr-2 h-4 w-4" />
                       <span>Orders History</span>
@@ -113,13 +111,16 @@ export default async function Header() {
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className='py-4 cursor-pointer'>
-                    <AccountSignout />
+                  <DropdownMenuItem className='py-4 cursor-pointer' asChild>
+                    <AccountSignout >
+                      <Power className="mr-2 h-4 w-4" />
+                      <span className='text-sm'>Sign Out</span>
+                    </AccountSignout>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               :
-              <Link href={'/login'}> <UserCircle size={22} className='text-sm font-medium leading-6 text-gray-900' /></Link>
+              <Link href={'/login'}> <SignIn size={24} className='text-sm font-medium leading-6 text-gray-900' /></Link>
           }
         </div>
       </nav>
