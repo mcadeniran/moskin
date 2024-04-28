@@ -14,3 +14,9 @@ export async function GET(request: Request) {
 
   return NextResponse.json(product);
 }
+
+export async function PATCH(request: Request) {
+  const body = await request.json();
+
+  console.log(body);
+}

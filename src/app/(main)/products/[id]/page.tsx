@@ -85,7 +85,23 @@ export default function ProdutPage({params}: any) {
           <div className=" whitespace-pre-line">
             <span className="text-sm italic text-gray-400">{data.Category.name}</span>
             <h3 className="mt-4 text-4xl font-serif font-semibold">{data.name}</h3>
-            <p className="mt-6 font-medium text-gray-700 text-xl">₦{(data.price).toLocaleString()}</p>
+            {/* <p className="mt-6 font-medium text-gray-700 text-xl">₦{(data.price).toLocaleString()}</p> */}
+            {data.onSale === false &&
+              <p className='mt-6 font-medium text-gray-700 text-xl'>
+                ₦{data.price.toLocaleString()}
+              </p>
+            }
+            {
+              data.onSale === true &&
+              <div className="flex gap-2 items-center ">
+                <p className='text-xs xl:text-sm 2xl:text-base font-light text-gray-500 mt-6 line-through'>
+                  ₦{data.price.toLocaleString()}
+                </p>
+                <p className='mt-6 font-medium text-gray-700 text-xl'>
+                  ₦{(data.price - (data.price * (data.off! / 100))).toLocaleString()}
+                </p>
+              </div>
+            }
             <div className="mt-6 flex flex-row items-center gap-16">
               <div className="flex flex-row items-center">
                 <button

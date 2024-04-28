@@ -12,29 +12,12 @@ import ImageDropZone from '@/components/layout/AdminComponents/ImageDropZone';
 import {toast} from 'sonner';
 import {Switch} from '@/components/ui/switch';
 import {useEffect, useState} from 'react';
+import {ProductFormSchema} from '@/schemas';
 
-const formSchema = z.object({
-  name: z.string().min(3, {
-    message: 'Product name must be at least 3 characters.'
-  }),
-  category: z.string().min(1, {
-    message: 'Category is required.'
-  }),
-  price: z.coerce.number({invalid_type_error: 'Price must be a number'})
-    .positive({message: 'Price must be positive'})
-    .finite({message: 'Must be a valid price'}),
-  description: z.string().min(1, {message: 'Description is required'}),
-  features: z.string(),
-  ingredients: z.string().min(1, {message: 'Active ingredients are required'}),
-  sale: z.boolean(),
-  off: z.coerce.number(),
-  images: z.array(z.string()),
-  display: z.boolean(),
-});
 export default function AddProductPage() {
   const [cats, setCats] = useState<CategoryType[]>([]);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof ProductFormSchema>>({
+    resolver: zodResolver(ProductFormSchema),
     defaultValues: {
       name: '',
       category: '',
@@ -49,8 +32,6 @@ export default function AddProductPage() {
     }
   });
 
-
-
   useEffect(() => {
     fetch('/api/category').then((response) => {
       response.json().then((c) => {
@@ -61,7 +42,7 @@ export default function AddProductPage() {
   }, []);
 
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (values: z.infer<typeof ProductFormSchema>) => {
     const data = {...values};
     // console.log(data);
     const result = await fetch('/api/product', {

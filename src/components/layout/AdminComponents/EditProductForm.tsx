@@ -9,38 +9,27 @@ import {Textarea} from '@/components/ui/textarea';
 import {Checkbox} from '@/components/ui/checkbox';
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
 import ImageDropZone from '@/components/layout/AdminComponents/ImageDropZone';
-import {toast} from 'sonner';
 import {Switch} from '@/components/ui/switch';
-import {useEffect, useState} from 'react';
+import {useState, useTransition} from 'react';
 import {useRouter} from 'next/navigation';
 import {Category, Product} from '@prisma/client';
+import {ProductFormSchema} from '@/schemas';
+import {Loader} from './loader';
+import {FormError} from '@/components/FormError';
+import {FormSuccess} from '@/components/FormSuccess';
+import {updateProduct} from '@/actions/update-product';
 
-const formSchema = z.object({
-  name: z.string().min(3, {
-    message: 'Product name must be at least 3 characters.'
-  }),
-  category: z.string().min(1, {
-    message: 'Category is required.'
-  }),
-  price: z.coerce.number({invalid_type_error: 'Price must be a number'})
-    .positive({message: 'Price must be positive'})
-    .finite({message: 'Must be a valid price'}),
-  description: z.string().min(1, {message: 'Description is required'}),
-  features: z.string(),
-  ingredients: z.string().min(1, {message: 'Active ingredients are required'}),
-  sale: z.boolean(),
-  off: z.coerce.number(),
-  images: z.array(z.string()),
-  display: z.boolean(),
-});
-
-type FormInput = z.infer<typeof formSchema>;
-
-export default function EditProductForm({product, categories}: {product: Product; categories: Category[];}) {
+const EditProductForm = ({product, categories, id}: {product: Product; categories: Category[]; id: string;}) => {
   const router = useRouter();
+  // TODO Reroute back to products
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const [isPending, startTransition] = useTransition();
+
+  const form = useForm<z.infer<typeof ProductFormSchema>>({
+    resolver: zodResolver(ProductFormSchema),
     defaultValues: {
       name: product.name,
       category: product.categoryId || '',
@@ -55,9 +44,22 @@ export default function EditProductForm({product, categories}: {product: Product
     }
   });
 
-  async function handleSubmit(formInput: FormInput) {
-    console.log(formInput);
-  }
+  const handleSubmit = (values: z.infer<typeof ProductFormSchema>) => {
+    setError('');
+    setSuccess('');
+    startTransition(() => {
+      updateProduct(values, id)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+          if (data.success) {
+            setSuccess(data.success);
+            // form.reset();
+          }
+        }).catch(() => setError('Something went wrong!'));
+    });
+  };
 
   const handleFileAdd = async (filesToUpload: string[]) => {
     const newImages = [...form.getValues('images'), ...filesToUpload];
@@ -88,7 +90,7 @@ export default function EditProductForm({product, categories}: {product: Product
                 return <FormItem className='w-1/2'>
                   <FormLabel>Product name</FormLabel>
                   <FormControl>
-                    <Input className='bg-input' {...field} placeholder='Product name' type='text' />
+                    <Input className='bg-input' {...field} placeholder='Product name' type='text' disabled={isPending} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>;
@@ -96,7 +98,7 @@ export default function EditProductForm({product, categories}: {product: Product
               <FormField control={form.control} name='category' render={({field}) => {
                 return <FormItem className='w-1/2'>
                   <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isPending} >
                     <FormControl>
                       <SelectTrigger className='bg-input'>
                         <SelectValue className='bg-input' placeholder='Select category' />
@@ -117,7 +119,7 @@ export default function EditProductForm({product, categories}: {product: Product
                 return <FormItem className='grow'>
                   <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <Input className='bg-input' {...field} placeholder='Price' type='number' />
+                    <Input className='bg-input' {...field} placeholder='Price' type='number' disabled={isPending} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>;
@@ -127,7 +129,7 @@ export default function EditProductForm({product, categories}: {product: Product
                   return <FormItem className='grow'>
                     <FormControl>
                       <Checkbox className='bg-input' id='sale' checked={field.value}
-                        onCheckedChange={field.onChange} />
+                        onCheckedChange={field.onChange} disabled={isPending} />
                     </FormControl>
                     <FormLabel>{' '}On sale?</FormLabel>
                     <FormMessage />
@@ -137,7 +139,7 @@ export default function EditProductForm({product, categories}: {product: Product
                   return <FormItem className='grow'>
                     <FormLabel>Percentage off</FormLabel>
                     <FormControl>
-                      <Input className='bg-input' {...field} placeholder='Percentage off' type='number' />
+                      <Input className='bg-input' {...field} placeholder='Percentage off' type='number' disabled={isPending} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>;
@@ -148,7 +150,7 @@ export default function EditProductForm({product, categories}: {product: Product
               return <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea className='bg-input' placeholder='Enter description' {...field} />
+                  <Textarea className='bg-input' placeholder='Enter description' {...field} disabled={isPending} />
                 </FormControl>
               </FormItem>;
             }} />
@@ -156,7 +158,7 @@ export default function EditProductForm({product, categories}: {product: Product
               return <FormItem>
                 <FormLabel>Features</FormLabel>
                 <FormControl>
-                  <Textarea className='bg-input' rows={7} placeholder='Enter features' {...field} />
+                  <Textarea className='bg-input' rows={7} placeholder='Enter features' {...field} disabled={isPending} />
                 </FormControl>
               </FormItem>;
             }} />
@@ -164,12 +166,19 @@ export default function EditProductForm({product, categories}: {product: Product
               return <FormItem>
                 <FormLabel>Active ingredients</FormLabel>
                 <FormControl>
-                  <Textarea className='bg-input' placeholder='Enter active ingredients' {...field} />
+                  <Textarea className='bg-input' placeholder='Enter active ingredients' {...field} disabled={isPending} />
                 </FormControl>
               </FormItem>;
             }} />
-            <div className="flex justify-between">
-              <Button type='submit' className=' w-min px-8 py-3'>Submit Product</Button>
+            <div className="flex justify-between items-center">
+              <div className="flex gap-2">
+                <Button type='submit' className=' w-min px-8 py-3' disabled={isPending} >
+                  {isPending ? <Loader /> : 'Upadate Product'}
+                </Button>
+                <FormSuccess message={success} />
+                <FormError message={error} />
+
+              </div>
               <div className="">
                 <FormField
                   control={form.control}
@@ -186,10 +195,12 @@ export default function EditProductForm({product, categories}: {product: Product
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           className='bg-input'
+                          disabled={isPending}
                         />
                       </FormControl>
                     </FormItem>
-                  )} />
+                  )}
+                />
               </div>
             </div>
           </form>
@@ -197,4 +208,5 @@ export default function EditProductForm({product, categories}: {product: Product
       </div>
     </div>
   );
-}
+};
+export default EditProductForm;

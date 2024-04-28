@@ -41,8 +41,28 @@ export default function FeaturedComponent() {
                 {/* Text Container */}
                 <div className="basis-1/5 flex flex-col justify-between py-4 gap-4 ">
                   <div className="flex flex-col">
-                    <h1 className=" text-base font-bold uppercase xl:text-lg 2xl:text-xl">{item.name}</h1>
-                    <span className="text-sm xl:text-base 2xl:text-lg font-semibold pt-2">₦{item.price}</span>
+                    <div className="flex items-center justify-between">
+                      <h1 className=" text-base font-bold uppercase xl:text-lg 2xl:text-xl">{item.name}</h1>
+                      {
+                        item.onSale && <p className="text-emerald-500">-{item.off}%</p>
+                      }
+                    </div>
+                    {item.onSale === false &&
+                      <p className='text-sm xl:text-base 2xl:text-lg font-semibold pt-2'>
+                        ₦{item.price.toLocaleString()}
+                      </p>
+                    }
+                    {
+                      item.onSale === true &&
+                      <div className="flex gap-2 items-center ">
+                        <p className='text-xs xl:text-sm 2xl:text-base font-light text-gray-500 pt-2 line-through'>
+                          ₦{item.price.toLocaleString()}
+                        </p>
+                        <p className='text-sm xl:text-base 2xl:text-lg font-semibold pt-2'>
+                          ₦{(item.price - (item.price * (item.off! / 100))).toLocaleString()}
+                        </p>
+                      </div>
+                    }
                   </div>
                   <p className="line-clamp-3 text-xs xl:text-small 2xl:text-base font-light">{item.description.trim()}</p>
                   <div className="flex items-center gap-4 justify-between">

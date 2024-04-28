@@ -12,7 +12,8 @@ const sliders = [
   },
   {
     id: 2,
-    title: "Unlocking Inner Brilliance: Enhance Your Aura with Our Collection",
+    title: "Crafting organic skincare for a radiant, healthy glow.",
+    // title: "Unlocking Inner Brilliance: Enhance Your Aura with Our Collection",
     image: '/bg_edited.png'
   },
   {

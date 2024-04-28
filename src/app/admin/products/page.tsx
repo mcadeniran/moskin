@@ -33,6 +33,8 @@ export default async function ProductsPage() {
               <TableHead className="">Title</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Price</TableHead>
+              <TableHead>Onsale</TableHead>
+              <TableHead>Visible</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -53,8 +55,10 @@ export default async function ProductsPage() {
                 </TableCell>
                 <TableCell>{product.Category?.name}</TableCell>
                 <TableCell>₦{product.price.toLocaleString()}</TableCell>
+                <TableCell>{product.onSale === true ? <p className='text-emerald-500'>Yes ({product.off}% off)</p> : <p className='text-destructive'>No</p>}</TableCell>
+                <TableCell>{product.display === true ? <p className='text-emerald-500'>Yes</p> : <p className='text-destructive'>No</p>}</TableCell>
                 <TableCell className="text-right">
-                  <Link href={'/admin/products/' + product.id} className='py-2 px-3 hover:underline '>View</Link>
+                  <Link href={'/admin/products/' + product.id} className='py-2 px-3 hover:underline '>Edit</Link>
                   <Link href='' className='py-2 pl-4 text-red-500 hover:underline'>Delete</Link>
                 </TableCell>
               </TableRow>

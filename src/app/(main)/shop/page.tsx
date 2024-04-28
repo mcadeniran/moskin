@@ -5,7 +5,11 @@ import {db} from '@/lib/db';
 import {CaretDown} from '@phosphor-icons/react/dist/ssr/CaretDown';
 
 export default async function ShopPage() {
-  const products = await db.product.findMany();
+  const products = await db.product.findMany({
+    where: {
+      display: true
+    }
+  });
 
   return (
     <div className='mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8'>
@@ -39,10 +43,32 @@ export default async function ShopPage() {
                     fill
                   />
                 </div>
-                <h3 className='mt-4 text-sm text-gray-700'>{p.name}</h3>
-                <p className='mt-1 text-lg font-medium text-gray-900'>
-                  ₦{p.price.toLocaleString()}
-                </p>
+                <div className="mt-4 flex justify-between items-center">
+                  <h3 className='text-sm text-gray-700'>{p.name}</h3>
+                  {
+                    p.onSale &&
+                    <p className="text-xs text-emerald-500">
+                      -{p.off}%
+                    </p>
+                  }
+
+                </div>
+                {p.onSale === false &&
+                  <p className='mt-1 text-lg font-medium text-gray-900'>
+                    ₦{p.price.toLocaleString()}
+                  </p>
+                }
+                {
+                  p.onSale === true &&
+                  <div className="flex gap-2 items-center ">
+                    <p className='mt-1 text-sm font-light text-gray-500 line-through'>
+                      ₦{p.price.toLocaleString()}
+                    </p>
+                    <p className='mt-1 text-lg font-medium text-gray-900'>
+                      ₦{(p.price - (p.price * (p.off! / 100))).toLocaleString()}
+                    </p>
+                  </div>
+                }
               </Link>
             ))}
       </div>
