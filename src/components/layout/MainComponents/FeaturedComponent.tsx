@@ -1,5 +1,5 @@
 'use client';
-import {featuredProducts} from '@/app/data';
+
 import {Button} from '@/components/ui/button';
 import {Product} from '@prisma/client';
 import {useQuery} from '@tanstack/react-query';
@@ -17,6 +17,7 @@ export default function FeaturedComponent() {
   });
 
   if (isLoading) return <FeaturedLoadingComponent />;
+
 
   if (error) return '';
 

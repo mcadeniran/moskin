@@ -4,7 +4,13 @@
  * @type {string[]}
  */
 
-export const publicRoutes = ['/', '/shop', '/cart', '/products'];
+export const publicRoutes = [
+  '/',
+  '/shop',
+  '/cart',
+  '/products',
+  '/api/featured',
+];
 
 /**
  * An array of nested routes that are accessible to the public
