@@ -11,14 +11,18 @@ import {
 import {Bars3Icon} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import AccountSignout from '../AccountSignout';
-import {Info, House, Storefront, Power, ShoppingBag, SignIn, UserSwitch, MagnifyingGlass} from "@phosphor-icons/react/dist/ssr";
-
-const navigation = [
-  {name: 'Home', href: '/'},
-  {name: 'About', href: '#'},
-  {name: 'Our Products', href: '/shop'},
-];
-
+import {
+  Info,
+  House,
+  Storefront,
+  Power,
+  ShoppingBag,
+  SignIn,
+  UserSwitch,
+  Basket,
+} from "@phosphor-icons/react/dist/ssr";
+import Image from 'next/image';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 
 export async function MobileNavbar() {
   const session = await auth();
@@ -33,6 +37,24 @@ export async function MobileNavbar() {
       </SheetTrigger>
       <SheetContent className='p-0'>
         <SheetHeader className='mt-12'>
+          {session?.user &&
+            <SheetClose asChild  >
+              <Link href='/profile' className='flex  justify-start font-light px-4 py-0  hover:bg-accent'>
+                <div className="flex justify-between">
+                  <div className="flex flex-row gap-2">
+                    <Avatar className='p-0 cursor-pointer h-16 w-16'>
+                      <AvatarImage src={session?.user.image} className=' object-cover' alt="@shadcn" />
+                      <AvatarFallback className=''>{session?.user.username.substring(0, 1).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col items-start">
+                      <p className="text-sm font-medium">{session.user.username}</p>
+                      <p className="text-xs font-light">Edit profile</p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </SheetClose>
+          }
           <SheetClose asChild  >
             <Link href='/' className='flex  justify-start font-light p-4  hover:bg-accent'>
               <SheetTitle className='font-normal  flex items-center text-base '><House className='mr-4 h-6 w-6' weight="light" />Home</SheetTitle>
@@ -48,16 +70,22 @@ export async function MobileNavbar() {
               <SheetTitle className='font-normal  flex items-center text-base '><Storefront className='mr-4 h-6 w-6' weight="light" />Our Products</SheetTitle>
             </Link>
           </SheetClose>
+        </SheetHeader>
+
+        <SheetHeader className='border-t '>
           <SheetClose asChild >
             <Link href={'/cart'} className='flex justify-start  font-light p-4  hover:bg-accent'>
               <SheetTitle className='font-normal flex items-center  text-base'><ShoppingBag className='mr-4 h-6 w-6' weight="light" />Cart</SheetTitle>
             </Link>
           </SheetClose>
-          <SheetClose asChild >
-            <Link href={'#'} className='flex justify-start  font-light p-4  hover:bg-accent'>
-              <SheetTitle className='font-normal flex items-center  text-base'><MagnifyingGlass className='mr-4 h-6 w-6' weight="light" />Search</SheetTitle>
-            </Link>
-          </SheetClose>
+          {
+            session?.user &&
+            <SheetClose asChild >
+              <Link href={'#'} className='flex justify-start  font-light p-4  hover:bg-accent'>
+                <SheetTitle className='font-normal flex items-center  text-base'><Basket className='mr-4 h-6 w-6' weight="light" />Orders</SheetTitle>
+              </Link>
+            </SheetClose>
+          }
         </SheetHeader>
 
         <SheetHeader className='border-t '>

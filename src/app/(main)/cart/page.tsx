@@ -1,32 +1,78 @@
 'use client';
-import {BankTransferIcon} from '@/components/Icons/BankTransferIcon';
-import {CreditCardIcon} from '@/components/Icons/CreditCardIcon';
+
 import {Button} from '@/components/ui/button';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {Minus} from '@phosphor-icons/react/dist/ssr/Minus';
 import {Plus} from '@phosphor-icons/react/dist/ssr/Plus';
 import {Trash} from '@phosphor-icons/react/dist/ssr/Trash';
 import Image from 'next/image';
-import React, {useEffect} from 'react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import React, {useEffect, useState} from 'react';
 import {useCartStore} from '@/lib/store';
+import {FormError} from '@/components/FormError';
+import {cn} from '@/lib/utils';
+import {Bank} from '@phosphor-icons/react/dist/ssr/Bank';
+import {CreditCard} from '@phosphor-icons/react/dist/ssr/CreditCard';
+import {useQuery} from '@tanstack/react-query';
+import {Address} from '@prisma/client';
+import {RadioGroup, RadioGroupItem} from '@/components/ui/radio-group';
+import {Label} from '@/components/ui/label';
+import {useSession} from 'next-auth/react';
+import Link from 'next/link';
 
+const paymentTypes = [
+  {
+    value: 'BankTransfer',
+    text: 'Bank Transfer',
+    icon: Bank,
+  },
+  {
+    value: 'OnlinePayment',
+    text: 'Online Payment',
+    icon: CreditCard,
+  },
+];
 
+const fetchUserAddress = (): Promise<Address[]> => fetch('/api/user/address').then(res => res.json());
 export default function CartPage() {
+  const session = useSession();
   const {products, totalItems, totalPrice, removeFromCart} = useCartStore();
+
+  const {isLoading, data, error} = useQuery({queryKey: ['addresses'], queryFn: fetchUserAddress});
+  const [address, setSelectedAddress] = useState('');
+
+
+
+  const [paymentType, setPaymentType] = useState('');
+  const [LocalError, setLocalError] = useState('');
 
   useEffect(() => {
     useCartStore.persist.rehydrate();
   }, []);
 
+  const handlePaymentType = (pType: string) => {
+    if (pType === paymentType) {
+      setPaymentType('');
+    } else {
+      setPaymentType(pType);
+    }
+  };
+
+  const handleAddressSelection = (ad: string) => {
+    setSelectedAddress(ad);
+  };
+
+  const selectedColor = 'bg-slate-800 text-white';
+
+  const handleCheckout = () => {
+    if (paymentType === '') {
+      setLocalError('Please select a payment method');
+    }
+  };
+
   return (
     <div className='mx-auto min-h-[calc(100vh-180px)] max-w-7xl pt-6  px-4 sm:px-6 lg:px-8' >
       <div className='flex flex-col lg:flex-row gap-4'>
+        {/* SHOPPING CART DETAILS */}
         <div className="flex flex-col basis-3/4">
           <div className="bg-accent rounded-xl p-4">
             <h2 className='text-base  font-medium text-gray-900 mb-4'>
@@ -93,6 +139,7 @@ export default function CartPage() {
           </div>
         </div>
         <div className="flex flex-col gap-4 basis-1/4">
+          {/* PRICE DETAILS */}
           <div className="bg-accent rounded-xl p-4 ">
             <h2 className='text-base  font-medium text-gray-900 mb-4'>
               Cart Summary
@@ -112,36 +159,100 @@ export default function CartPage() {
               </div>
             </div>
           </div>
-          <div className="bg-accent rounded-xl p-4">
-            <h2 className='text-base  font-medium text-gray-900 mb-4'>
-              Payment Method
-            </h2>
-            <div className=" border-t border-gray-300 pt-4 justify-center items-center flex gap-4 mb-4">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant={'outline'} className='bg-slate-200'><CreditCardIcon /></Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Online Payment</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant={'outline'} className='bg-slate-200'><BankTransferIcon /></Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Bank Transfer</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+
+          {/* ADDRESS SECTION */}
+          {
+            session.data?.user &&
+            <div className="bg-accent rounded-xl p-4 w-full">
+              <h2 className='text-base  font-medium text-gray-900 mb-4'>
+                Select Delivery Address
+              </h2>
+              <div className=" border-t pt-4 justify-start items-start flex mb-4 w-full gap-2">
+                {error && <FormError message='Error fetching address' />}
+                {isLoading && <p className=' italic text-xs'>Loading addresses...</p>}
+                {!error && !isLoading && data?.length === 0 && <p className=' italic text-xs'>No address saved!</p>}
+                {
+                  !error && !isLoading && data && data?.length > 0 &&
+                  <RadioGroup className='flex w-full flex-col gap-4' defaultValue={''} onValueChange={(value) => handleAddressSelection(value)}>
+                    {
+                      data.map(ad => (
+                        <div key={ad.id} className="flex flex-col w-full">
+                          <div className="flex items-center gap-4">
+                            <RadioGroupItem value={ad.id} id={ad.id} />
+                            <Label htmlFor={ad.id}>
+                              {ad.title}
+                            </Label>
+                          </div>
+                          <div className="pl-8 mt-2">
+                            {
+                              ad.id === address &&
+                              <div className="flex flex-col w-full rounded-lg grow">
+                                <p className="flex text-sm  text-muted-foreground">{ad.house}</p>
+                                <p className="flex text-sm  text-muted-foreground">{ad.street}</p>
+                                <p className="flex text-sm  text-muted-foreground">{ad.state} State</p>
+                                <p className="flex text-sm  text-muted-foreground">{ad.country}</p>
+                                <p className="flex text-sm  text-muted-foreground">{ad.postal}</p>
+                              </div>
+                            }
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </RadioGroup>
+                }
+              </div>
+
             </div>
-            <Button className='w-full bg-slate-600'>Check Out</Button>
-          </div>
+          }
+          {/* PAYMENT METHOD */}
+          {
+            session.data?.user &&
+            <div className="bg-accent rounded-xl p-4">
+              <h2 className='text-base  font-medium text-gray-900 mb-4'>
+                Payment Method
+              </h2>
+              <div className=" border-t pt-4 justify-center items-center flex mb-4 w-full gap-2">
+                {
+                  paymentTypes.map((pt) => (
+                    <Button
+                      variant='outline'
+                      key={pt.value}
+                      className={cn(
+                        'group flex-1 bg-slate-300 items-center  flex justify-center hover:bg-slate-400 hover:text-white',
+                        paymentType === pt.value && selectedColor)}
+                      onClick={() => handlePaymentType(pt.value)}
+                    >
+                      <pt.icon className='h-5 w-5 ' />
+                      <span className="ml-2">
+                        {pt.text}
+                      </span>
+                    </Button>
+                  ))
+                }
+
+              </div>
+              <FormError message={LocalError} />
+              <Button className='w-full bg-slate-600 cursor-pointer  disabled:cursor-not-allowed ' onClick={handleCheckout} disabled={totalItems === 0}>Check Out</Button>
+            </div>
+          }
+          {/* USER NOT LOGGED IN */}
+          {
+            !session.data?.user &&
+            <div className="bg-accent rounded-xl w-full p-4">
+              <h2 className='text-base  font-medium text-gray-900 mb-4'>
+                Authentication Required
+              </h2>
+              <div className=" border-t pt-4 justify-center items-center flex flex-col mb-4 w-full gap-2">
+                <FormError message='To complete your order, please sign in or create an account to proceed.' />
+                <Button className='w-full mt-4 bg-slate-600' asChild>
+                  <Link href='/login'>Login</Link>
+                </Button>
+
+              </div>
+            </div>
+          }
         </div>
       </div>
-    </div>
+    </div >
   );
-}
+};

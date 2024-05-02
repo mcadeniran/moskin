@@ -27,7 +27,7 @@ export default function FeaturedComponent() {
         <h1 className=' text-slate-800 font-medium text-lg md:text-2xl'>Best Sellers</h1>
         <hr className='grow bg-slate-800' />
       </div>
-      <div className='w-screen overflow-x-scroll'>
+      <div className='px-2 w-full overflow-x-scroll'>
         {/* Wrapper */}
         <div className="w-max flex">
           {/* Single Item */}

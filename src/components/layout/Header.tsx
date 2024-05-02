@@ -2,7 +2,7 @@ import logo from '/public/logo3.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import {MobileNavbar} from './MobileNavbar';
-import {ClockCounterClockwise, Gear, MagnifyingGlass, Power, ShoppingBag, SignIn, User, UserCircle} from "@phosphor-icons/react/dist/ssr";
+import {Basket, ClockCounterClockwise, Gear, MagnifyingGlass, Power, ShoppingBag, SignIn, User, UserCircle} from "@phosphor-icons/react/dist/ssr";
 
 import {
   Avatar,
@@ -97,13 +97,13 @@ export default async function Header() {
                   <DropdownMenuGroup>
                     <DropdownMenuItem className='py-4 cursor-pointer' asChild>
                       <Link href={'/profile'} className=''>
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Profiles</span>
+                        <UserCircle className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem className='py-4 cursor-pointer'>
-                      <ClockCounterClockwise className="mr-2 h-4 w-4" />
-                      <span>Orders History</span>
+                      <Basket className="mr-2 h-4 w-4" />
+                      <span>Orders</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem className='py-4  cursor-pointer'>
                       <Gear className="mr-2 h-4 w-4" />
