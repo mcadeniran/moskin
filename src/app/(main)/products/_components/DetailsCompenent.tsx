@@ -8,7 +8,7 @@ interface ProductProp {
 
 const DetailsCompenent = ({data}: ProductProp) => {
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col mt-8'>
       {/* DETAILS */}
       <div className="w-full border-t py-4 flex flex-col gap-4">
         <p className="italic text-lg font-medium text-gray-700 ">Description</p>

@@ -1,5 +1,18 @@
 import * as z from 'zod';
 
+export const DeliveryAddressSchema = z.object({
+  fullname: z
+    .string()
+    .min(1, "Reciever's name required!")
+    .includes(' ', { message: 'Must be given name and surname' }),
+  house: z.string().min(1, 'House address is required'),
+  street: z.string().min(1, 'Street address is required'),
+  city: z.string().min(1, 'City is required'),
+  state: z.string().min(1, 'State is required'),
+  country: z.string().min(1, 'Country is required'),
+  postalCode: z.string().min(1, 'Postal code is required'),
+});
+
 export const LoginFormSchema = z.object({
   emailAddress: z.string().min(1, 'Email is required').email('Invalid email'),
   password: z

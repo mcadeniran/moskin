@@ -25,21 +25,18 @@ type ProductType = {
   isFeatured: boolean;
 };
 
-type CartItemType = {
+type CartItem = {
   id: string;
   name: string;
+  quantity: number;
   image: string;
   price: number;
-  quantity: number;
 };
 
-type CartType = {
-  products: CartItemType[];
-  totalItems: number;
-  totalPrice: number;
-};
-
-type ActionTypes = {
-  addToCart: (item: CartItemType) => void;
-  removeFromCart: (item: CartItemType) => void;
+type DeliveryAddress = {
+  fullName: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
 };

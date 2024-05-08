@@ -8,6 +8,7 @@ import React from 'react';
 import FeaturedLoadingComponent from './FeaturedLoadingComponent';
 import {ArrowsOut, ShoppingCart} from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
+import TitleComponenet from './TitleComponenet';
 
 export default function FeaturedComponent() {
   const {isLoading, error, data} = useQuery({
@@ -22,69 +23,131 @@ export default function FeaturedComponent() {
   if (error) return '';
 
   return (
-    <>
-      <div className="mt-8 px-4 flex items-center justify-center gap-2">
-        <h1 className=' text-slate-800 font-medium text-lg md:text-2xl'>Best Sellers</h1>
-        <hr className='grow bg-slate-800' />
-      </div>
-      <div className='px-2 w-full overflow-x-scroll'>
-        {/* Wrapper */}
-        <div className="w-max flex">
-          {/* Single Item */}
-          {
-            data.map((item: Product) => (
-              <div className="w-screen h-[50vh] flex flex-col items-center justify-around p-4 
-            hover:bg-gray-100/50 transition-all duration-300 md:w-[50vw] xl:w-[33vw] xl:h-[80vh]" key={item.id}>
-                {/* Image Container */}
-                <div className="relative basis-4/5 w-full">
-                  <Image src={item.images[0]} alt='' fill className='object-cover' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
-                </div>
-                {/* Text Container */}
-                <div className="basis-1/5 flex flex-col justify-between py-4 gap-4 ">
-                  <div className="flex flex-col">
-                    <div className="flex items-center justify-between">
-                      <h1 className=" text-base font-bold uppercase xl:text-lg 2xl:text-xl">{item.name}</h1>
-                      {
-                        item.onSale && <p className="text-emerald-500">-{item.off}%</p>
-                      }
-                    </div>
-                    {item.onSale === false &&
-                      <p className='text-sm xl:text-base 2xl:text-lg font-semibold pt-2'>
-                        ₦{item.price.toLocaleString()}
-                      </p>
-                    }
-                    {
-                      item.onSale === true &&
-                      <div className="flex gap-2 items-center ">
-                        <p className='text-xs xl:text-sm 2xl:text-base font-light text-gray-500 pt-2 line-through'>
-                          ₦{item.price.toLocaleString()}
-                        </p>
-                        <p className='text-sm xl:text-base 2xl:text-lg font-semibold pt-2'>
-                          ₦{(item.price - (item.price * (item.off! / 100))).toLocaleString()}
-                        </p>
-                      </div>
-                    }
-                  </div>
-                  <p className="line-clamp-3 text-xs xl:text-small 2xl:text-base font-light">{item.description.trim()}</p>
-                  <div className="flex items-center gap-4 justify-between">
-                    <div className="border p-2 flex items-center rounded-lg cursor-pointer">
-                      <Link
-                        key={item.id}
-                        href={'/products/' + item.id}
-                        className='group'
-                      >
-                        <ArrowsOut size={22} weight="light" />
-                      </Link>
-                    </div>
-                    <Button size='sm' className='p-2 bg-slate-800 grow'><ShoppingCart size={18} weight="light" className='mr-2' />Add to cart</Button>
-                  </div>
-
-                </div>
+    <div className='px-8 py-4 '>
+      {/* <div className=" flex items-center justify-center gap-2">
+        <h1 className='font-medium text-lg md:text-2xl'>Best Sellers</h1>
+        <hr className='grow border-rosegold' />
+      </div> */}
+      <TitleComponenet title='Best Selling Products' />
+      <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-8  md:grid-cols-3 lg:grid-cols-4 ">
+        {
+          data.map((item: Product) => (
+            <div className="flex flex-col gap-2 " key={item.id}>
+              {/* IMAGE CONTAINER */}
+              <div className="relative h-44 aspect-square sm:h-56 md:h-64  lg:h-72   overflow-hidden rounded-lg bg-gray-200">
+                <Image src={item.images[0]} alt='' fill className='object-cover' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
               </div>
-            ))
-          }
-        </div>
+              {/* DETAILS CONTAINER */}
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between">
+                  <h1 className=" text-sm font-normal  xl:text-base 2xl:text-lg">{item.name}</h1>
+                  {
+                    item.onSale && <p className="text-emerald-800">-{item.off}%</p>
+                  }
+                </div>
+                {item.onSale === false &&
+                  <p className='text-xs xl:text-sm 2xl:text-base font-light'>
+                    ₦{item.price.toLocaleString()}
+                  </p>
+                }
+                {
+                  item.onSale === true &&
+                  <div className="flex gap-2 items-center ">
+                    <p className='text-xs xl:text-sm 2xl:text-base font-light text-gray-500  line-through'>
+                      ₦{item.price.toLocaleString()}
+                    </p>
+                    <p className='text-xs xl:text-sm 2xl:text-base font-light '>
+                      ₦{(item.price - (item.price * (item.off! / 100))).toLocaleString()}
+                    </p>
+                  </div>
+                }
+              </div>
+              <div className="flex items-center gap-4 justify-between">
+                <div className="border border-rosegold  p-1 flex items-center rounded-lg cursor-pointer">
+                  <Link
+                    key={item.id}
+                    href={'/products/' + item.id}
+                    className='group'
+                  >
+                    <ArrowsOut size={22} weight="light" />
+                  </Link>
+                </div>
+                <Button size='sm' className='p-2 bg-slate-800  grow'><ShoppingCart size={18} weight="light" className='mr-2' />Add to cart</Button>
+              </div>
+
+
+              {/* ACTION CONTAINER */}
+            </div>
+          ))
+        }
       </div>
-    </>
+    </div >
   );
+
+  // return (
+  //   <>
+  //     <div className="mt-8 px-4 flex items-center justify-center gap-2">
+  //       <h1 className=' text-slate-800 font-medium text-lg md:text-2xl'>Best Sellers</h1>
+  //       <hr className='grow bg-slate-800' />
+  //     </div>
+  //     <div className='px-2 w-full overflow-x-scroll'>
+  //       {/* Wrapper */}
+  //       <div className="w-max flex">
+  //         {/* Single Item */}
+  //         {
+  //           data.map((item: Product) => (
+  //             <div className="w-screen h-[50vh] flex flex-col items-center justify-around p-4 
+  //           hover:bg-gray-100/50 transition-all duration-300 md:w-[50vw] xl:w-[33vw] xl:h-[80vh]" key={item.id}>
+  //               {/* Image Container */}
+  //               <div className="relative basis-4/5 w-full">
+  //                 <Image src={item.images[0]} alt='' fill className='object-cover' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
+  //               </div>
+  //               {/* Text Container */}
+  //               <div className="basis-1/5 flex flex-col justify-between py-4 gap-4 ">
+  //                 <div className="flex flex-col">
+  //                   <div className="flex items-center justify-between">
+  //                     <h1 className=" text-base font-bold uppercase xl:text-lg 2xl:text-xl">{item.name}</h1>
+  //                     {
+  //                       item.onSale && <p className="text-emerald-500">-{item.off}%</p>
+  //                     }
+  //                   </div>
+  //                   {item.onSale === false &&
+  //                     <p className='text-sm xl:text-base 2xl:text-lg font-semibold pt-2'>
+  //                       ₦{item.price.toLocaleString()}
+  //                     </p>
+  //                   }
+  //                   {
+  //                     item.onSale === true &&
+  //                     <div className="flex gap-2 items-center ">
+  //                       <p className='text-xs xl:text-sm 2xl:text-base font-light text-gray-500 pt-2 line-through'>
+  //                         ₦{item.price.toLocaleString()}
+  //                       </p>
+  //                       <p className='text-sm xl:text-base 2xl:text-lg font-semibold pt-2'>
+  //                         ₦{(item.price - (item.price * (item.off! / 100))).toLocaleString()}
+  //                       </p>
+  //                     </div>
+  //                   }
+  //                 </div>
+  //                 <p className="line-clamp-3 text-xs xl:text-small 2xl:text-base font-light">{item.description.trim()}</p>
+  //                 <div className="flex items-center gap-4 justify-between">
+  //                   <div className="border p-2 flex items-center rounded-lg cursor-pointer">
+  //                     <Link
+  //                       key={item.id}
+  //                       href={'/products/' + item.id}
+  //                       className='group'
+  //                     >
+  //                       <ArrowsOut size={22} weight="light" />
+  //                     </Link>
+  //                   </div>
+  //                   <Button size='sm' className='p-2 bg-slate-800 grow'><ShoppingCart size={18} weight="light" className='mr-2' />Add to cart</Button>
+  //                 </div>
+
+  //               </div>
+  //             </div>
+  //           ))
+  //         }
+  //       </div>
+  //     </div>
+  //   </>
+  // );
 }

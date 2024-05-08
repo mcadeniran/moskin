@@ -1,54 +1,85 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-const INITIAL_STATE = {
-  products: [],
-  totalItems: 0,
-  totalPrice: 0,
+
+type Cart = {
+  items: CartItem[];
+  totalPrice: number;
+  paymentMethod: string;
+  deliveryAddress: DeliveryAddress;
 };
 
-export const useCartStore = create(
-  persist<CartType & ActionTypes>(
-    (set, get) => ({
-      products: INITIAL_STATE.products,
-      totalItems: INITIAL_STATE.totalItems,
-      totalPrice: INITIAL_STATE.totalPrice,
-      addToCart(item) {
-        const products = get().products;
-        const productInState = products.find(
-          (product) => product.id === item.id
-        );
+const initialState: Cart = {
+  items: [],
+  totalPrice: 0,
+  paymentMethod: 'Online',
+  deliveryAddress: {
+    fullName: '',
+    address: '',
+    city: '',
+    postalCode: '',
+    country: '',
+  },
+};
 
-        if (productInState) {
-          const updatedProducts = products.map((product) =>
-            product.id === productInState.id
-              ? {
-                  ...item,
-                  quantity: item.quantity + product.quantity,
-                  price: item.price + product.price,
-                }
-              : item
-          );
-          set((state) => ({
-            products: updatedProducts,
-            totalItems: state.totalItems + item.quantity,
-            totalPrice: state.totalPrice + item.price,
-          }));
-        } else {
-          set((state) => ({
-            products: [...state.products, item],
-            totalItems: state.totalItems + item.quantity,
-            totalPrice: state.totalPrice + item.price,
-          }));
-        }
-      },
-      removeFromCart(item) {
-        set((state) => ({
-          products: state.products.filter((product) => product.id !== item.id),
-          totalItems: state.totalItems - item.quantity,
-          totalPrice: state.totalPrice - item.price,
-        }));
-      },
-    }),
-    { name: 'cart', skipHydration: true }
-  )
+export const cartStore = create<Cart>()(
+  persist(() => initialState, {
+    name: 'cartStore',
+  })
 );
+
+export default function useCartStore() {
+  const { items, totalPrice, paymentMethod, deliveryAddress } = cartStore();
+  return {
+    items,
+    totalPrice,
+    paymentMethod,
+    deliveryAddress,
+    increase: (item: CartItem) => {
+      const exist = items.find((x) => x.id === item.id);
+      const updatedCartItems = exist
+        ? items.map((x) =>
+            x.id === item.id ? { ...exist, quantity: exist.quantity + 1 } : x
+          )
+        : [...items, { ...item, quantity: 1 }];
+      const totalPrice = calcPrice(updatedCartItems);
+      cartStore.setState({
+        items: updatedCartItems,
+        totalPrice,
+      });
+    },
+    decrease: (item: CartItem) => {
+      const exist = items.find((x) => x.id === item.id);
+      if (!exist) return;
+
+      const updatedCartItem =
+        exist.quantity === 1
+          ? items.filter((x: CartItem) => x.id !== item.id)
+          : items.map((x) =>
+              item.id === x.id ? { ...exist, quantity: exist.quantity - 1 } : x
+            );
+      const totalPrice = calcPrice(updatedCartItem);
+      cartStore.setState({
+        items: updatedCartItem,
+        totalPrice,
+      });
+    },
+    saveDeliveryAddress: (deliveryAddress: DeliveryAddress) => {
+      cartStore.setState({
+        deliveryAddress,
+      });
+    },
+    savePaymentMethod: (paymentMethod: string) => {
+      cartStore.setState({
+        paymentMethod,
+      });
+    },
+  };
+}
+
+const calcPrice = (items: CartItem[]) => {
+  const itemsPrice = items.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+  return itemsPrice;
+};

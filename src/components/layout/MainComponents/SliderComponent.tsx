@@ -32,7 +32,7 @@ const banner =
 
 export default function SliderComponent() {
   return (
-    <div className='flex flex-col h-[calc(100vh-4.5rem)] md:h-[calc(100vh-5.2rem)] lg:flex-row'>
+    <div className='flex flex-col h-[calc(100vh-4.0rem)] md:h-[calc(100vh-4rem)] lg:flex-row'>
       {/* Text Container */}
       <div className=" items-center flex justify-center flex-col gap-8 font-bold flex-1">
         <h1 className="text-3xl text-center uppercase p-4 md:p-10 md:text-4xl lg:text-5xl">{banner.title}</h1>

@@ -66,3 +66,50 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function DELETE(req: Request) {
+  const userSession = await auth();
+
+  if (!userSession) {
+    return NextResponse.json(
+      { success: false, message: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
+  try {
+    const id: string = await req.json();
+
+    const address = await db.address.findUnique({
+      where: { id },
+    });
+
+    if (!address) {
+      return NextResponse.json(
+        { success: false, message: 'Could not find address' },
+        { status: 401 }
+      );
+    }
+
+    if (address.userEmail !== userSession.user.email) {
+      return NextResponse.json(
+        { success: false, message: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const del = await db.address.delete({
+      where: { id },
+    });
+
+    return NextResponse.json(
+      { address: del, message: 'Address deleted!' },
+      { status: 201 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, message: 'Unexpected error occured!' },
+      { status: 409 }
+    );
+  }
+}

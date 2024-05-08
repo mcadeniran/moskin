@@ -4,12 +4,11 @@ import {Button} from '@/components/ui/button';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {Minus} from '@phosphor-icons/react/dist/ssr/Minus';
 import {Plus} from '@phosphor-icons/react/dist/ssr/Plus';
-import {Trash} from '@phosphor-icons/react/dist/ssr/Trash';
 import Image from 'next/image';
 import React, {useEffect, useState} from 'react';
-import {useCartStore} from '@/lib/store';
+import useCartStore from '@/lib/store';
 import {FormError} from '@/components/FormError';
-import {cn} from '@/lib/utils';
+import {cn, getAddressDeliveryPrice} from '@/lib/utils';
 import {Bank} from '@phosphor-icons/react/dist/ssr/Bank';
 import {CreditCard} from '@phosphor-icons/react/dist/ssr/CreditCard';
 import {useQuery} from '@tanstack/react-query';
@@ -18,6 +17,7 @@ import {RadioGroup, RadioGroupItem} from '@/components/ui/radio-group';
 import {Label} from '@/components/ui/label';
 import {useSession} from 'next-auth/react';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
 
 const paymentTypes = [
   {
@@ -35,19 +35,17 @@ const paymentTypes = [
 const fetchUserAddress = (): Promise<Address[]> => fetch('/api/user/address').then(res => res.json());
 export default function CartPage() {
   const session = useSession();
-  const {products, totalItems, totalPrice, removeFromCart} = useCartStore();
+  const {items, totalPrice, increase, decrease} = useCartStore();
 
-  const {isLoading, data, error} = useQuery({queryKey: ['addresses'], queryFn: fetchUserAddress});
+  const {isLoading, data: userAddress, error} = useQuery({queryKey: ['addresses'], queryFn: fetchUserAddress});
   const [address, setSelectedAddress] = useState('');
 
-
+  const [delivery, setDelivery] = useState(0);
 
   const [paymentType, setPaymentType] = useState('');
   const [LocalError, setLocalError] = useState('');
 
-  useEffect(() => {
-    useCartStore.persist.rehydrate();
-  }, []);
+  const router = useRouter();
 
   const handlePaymentType = (pType: string) => {
     if (pType === paymentType) {
@@ -57,16 +55,38 @@ export default function CartPage() {
     }
   };
 
+  useEffect(() => {
+    const selectedAddress = userAddress && userAddress.find((ad) => ad.id === address);
+    if (!selectedAddress) return;
+    const getDeliveryPrice = getAddressDeliveryPrice(selectedAddress);
+    setDelivery(getDeliveryPrice);
+  }, [address, userAddress]);
+
   const handleAddressSelection = (ad: string) => {
     setSelectedAddress(ad);
   };
 
   const selectedColor = 'bg-slate-800 text-white';
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    if (!session.data) {
+      return router.push('/login');
+    }
     if (paymentType === '') {
       setLocalError('Please select a payment method');
+    } else {
+      try {
+        const res = await fetch("/api/orders", {
+          method: 'POST',
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({})
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+
   };
 
   return (
@@ -79,59 +99,60 @@ export default function CartPage() {
               Shopping Cart
             </h2>
             <div className=" border-t border-gray-300 pt-4">
-              {products.length === 0 && <p className='text-center text-sm text-gray-500'>Your cart is empty 😔</p>}
-              {products.length > 0 && <>
+              {items.length === 0 && <p className='text-center text-sm text-gray-500'>Your cart is empty 😔</p>}
+              {items.length > 0 && <>
                 <Table className='w-full'>
                   <TableHeader>
                     <TableRow>
                       <TableHead className="">Product</TableHead>
                       <TableHead>Quantity</TableHead>
-                      <TableHead>Price</TableHead>
-                      <TableHead className="text-right"></TableHead>
+                      <TableHead>Unit Price</TableHead>
+                      <TableHead className="text-right">Price</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {products.map((item) => (
+                    {items.map((item) => (
                       <TableRow key={item.id}>
                         <TableCell className="max-w-[350px] font-medium">
-                          <div className="flex gap-2 justify-items-start">
-                            <Image
-                              src={item.image}
-                              alt='avatar'
-                              width={40}
-                              height={40}
-                              className='rounded-sm h-10 w-10 object-cover'
-                            />
-                            <div className=" max-w-[350px] p-0">
-                              <p className="text-sm font-normal">{item.name}</p>
-                              {/* <span className=' text-xs line-clamp-1 mt-1 text-black font-extralight'>{item.description}</span> */}
+                          <Link href={`/products/${item.id}`}>
+                            <div className="flex gap-2 justify-items-start">
+                              <Image
+                                src={item.image}
+                                alt='avatar'
+                                width={50}
+                                height={50}
+                                className='rounded-sm h-10 w-10 object-cover'
+                              />
+                              <div className=" max-w-[350px] p-0">
+                                <p className="text-sm font-normal">{item.name}</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-row justify-start items-center gap-2 mt-2">
+                            <div
+                              onClick={() => decrease(item)}
+                              className="text-center text-xs font-light cursor-pointer h-6 w-6  flex border rounded-full items-center justify-center">
+                              <Minus size={16} weight="light" />
+                            </div>
+                            <div className='text-center text-xs font-light  w-16 border rounded-2xl py-1 '>{item.quantity}</div>
+                            <div
+                              onClick={() => increase(item)}
+                              className="text-center text-xs font-light cursor-pointer h-6 w-6  flex border rounded-full items-center justify-center">
+                              <Plus size={16} weight="light" />
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell>
-                          <div className="flex max-w-[80px] py-1 px-2 bg-slate-200 rounded-lg justify-between items-center ">
-                            <Minus size={12} className='hover:underline cursor-pointer' />
-                            <p className="text-xs">
-                              {item.quantity}
-                            </p>
-                            <Plus size={12} className='hover:underline cursor-pointer' />
-
-                          </div>
-                        </TableCell>
                         <TableCell className='font-semibold text-sm'>₦{item.price.toLocaleString()}</TableCell>
-                        <TableCell className="text-right">
-                          <Trash
-                            size={20} weight="light"
-                            onClick={() => removeFromCart(item)}
-                          />
-                        </TableCell>
+                        <TableCell className='font-semibold text-sm text-right'>₦{(item.price * item.quantity).toLocaleString()}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
-                <div className="flex">
+                {/* <div className="flex">
                   <Button variant={'destructive'} className='ml-4 mt-4 text-xs'>Clear Cart</Button>
-                </div>
+                </div> */}
               </>
               }
             </div>
@@ -146,16 +167,20 @@ export default function CartPage() {
             </h2>
             <div className=" border-t border-gray-300 pt-4">
               <div className="flex justify-between">
+                <p className="text-xs font-light">Sub Total</p>
+                <p className="text-sm font-normal">₦{totalPrice.toLocaleString()}</p>
+              </div>
+              <div className="flex justify-between mt-2">
+                <p className="text-xs font-light">Delivery</p>
+                <p className="text-sm font-normal">₦{delivery.toLocaleString()}</p>
+              </div>
+              <div className="flex justify-between mt-2">
                 <p className="text-xs font-light">Discount</p>
                 <p className="text-sm font-normal">₦0</p>
               </div>
-              <div className="flex justify-between mt-1">
-                <p className="text-xs font-light">Delivery</p>
-                <p className="text-sm font-normal">₦3,000</p>
-              </div>
               <div className="flex justify-between mt-2">
                 <p className="text-xs font-light">Total</p>
-                <p className="text-sm font-normal">₦{totalPrice === 0 ? 0 : (totalPrice + 3000).toLocaleString()}</p>
+                <p className="text-sm font-normal">₦{totalPrice === 0 ? 0 : (totalPrice + delivery).toLocaleString()}</p>
               </div>
             </div>
           </div>
@@ -170,12 +195,12 @@ export default function CartPage() {
               <div className=" border-t pt-4 justify-start items-start flex mb-4 w-full gap-2">
                 {error && <FormError message='Error fetching address' />}
                 {isLoading && <p className=' italic text-xs'>Loading addresses...</p>}
-                {!error && !isLoading && data?.length === 0 && <p className=' italic text-xs'>No address saved!</p>}
+                {!error && !isLoading && userAddress?.length === 0 && <p className=' italic text-xs'>No address saved!</p>}
                 {
-                  !error && !isLoading && data && data?.length > 0 &&
+                  !error && !isLoading && userAddress && userAddress?.length > 0 &&
                   <RadioGroup className='flex w-full flex-col gap-4' defaultValue={''} onValueChange={(value) => handleAddressSelection(value)}>
                     {
-                      data.map(ad => (
+                      userAddress.map(ad => (
                         <div key={ad.id} className="flex flex-col w-full">
                           <div className="flex items-center gap-4">
                             <RadioGroupItem value={ad.id} id={ad.id} />
@@ -189,6 +214,7 @@ export default function CartPage() {
                               <div className="flex flex-col w-full rounded-lg grow">
                                 <p className="flex text-sm  text-muted-foreground">{ad.house}</p>
                                 <p className="flex text-sm  text-muted-foreground">{ad.street}</p>
+                                <p className="flex text-sm  text-muted-foreground">{ad.city}</p>
                                 <p className="flex text-sm  text-muted-foreground">{ad.state} State</p>
                                 <p className="flex text-sm  text-muted-foreground">{ad.country}</p>
                                 <p className="flex text-sm  text-muted-foreground">{ad.postal}</p>
@@ -232,7 +258,7 @@ export default function CartPage() {
 
               </div>
               <FormError message={LocalError} />
-              <Button className='w-full bg-slate-600 cursor-pointer  disabled:cursor-not-allowed ' onClick={handleCheckout} disabled={totalItems === 0}>Check Out</Button>
+              <Button className='w-full bg-slate-600 cursor-pointer  disabled:cursor-not-allowed ' onClick={handleCheckout} disabled={items.length === 0}>Check Out</Button>
             </div>
           }
           {/* USER NOT LOGGED IN */}

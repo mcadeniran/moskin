@@ -13,6 +13,7 @@ import FooterSection from '@/components/layout/Footer';
 import SliderComponent from '@/components/layout/MainComponents/SliderComponent';
 import FeaturedComponent from '@/components/layout/MainComponents/FeaturedComponent';
 import {Palette, Tag, ThumbsUp, Truck} from '@phosphor-icons/react/dist/ssr';
+import TitleComponenet from '@/components/layout/MainComponents/TitleComponenet';
 
 const reasons = [
   {
@@ -98,13 +99,11 @@ export default async function Home() {
       <Header />
       <SliderComponent />
       <FeaturedComponent />
-      <div className=" mt-4">
+      <div className="">
         {/* Benefit */}
-        <div className='mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:px-8 '>
-          <div className='mt-6 rounded-xl'>
-            <p className='text-primary text-xl md:text-4xl text-center'>
-              Benefits
-            </p>
+        <div className='pb-12 px-4 sm:px-6 lg:px-8 max-w-full'>
+          <div className='mt-16 rounded-xl max-w-7xl mx-auto'>
+            <TitleComponenet title='Benefits of MOS' />
             <div className='flex justify-center mt-6'>
               <p className='text-center w-96 text-gray-500'>
                 Our plant-based ingredients are great options for acheiving health
@@ -136,10 +135,8 @@ export default async function Home() {
             </div>
           </div>
           {/* Magic */}
-          <div className='mt-16'>
-            <p className='text-primary text-xl md:text-4xl text-center'>
-              Embrace the Magic of MOS
-            </p>
+          <div className='mt-16  max-w-7xl mx-auto'>
+            <TitleComponenet title='Embrace the Magic of MOS' />
             <div className='flex flex-col gap-6 md:flex-row justify-start items-start mt-8'>
               <div className='relative w-full h-auto basis-2/5'>
                 <Image
@@ -175,11 +172,8 @@ export default async function Home() {
               </div>
             </div>
           </div>
-
-          <div className='mt-16 '>
-            <p className='text-primary text-xl md:text-4xl text-center'>
-              Testimonials
-            </p>
+          <div className='mt-16  max-w-7xl mx-auto'>
+            <TitleComponenet title='What People Are Saying' />
             <div className='flex justify-center mt-6'>
               <p className='text-center w-96 text-gray-500'>
                 See what others are saying about the transaformative benefits of
