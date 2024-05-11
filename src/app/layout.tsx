@@ -1,5 +1,5 @@
 import type {Metadata} from 'next';
-import {Lato} from 'next/font/google';
+import {Grenze, Lato, Raleway} from 'next/font/google';
 import './globals.css';
 import {Toaster} from '@/components/ui/sonner';
 import {SessionProvider} from 'next-auth/react';
@@ -9,6 +9,11 @@ import QueryProvider from '@/components/QueryProvider';
 const lato = Lato({
   subsets: ['latin'],
   weight: ['100', '300', '400', '700', '900'],
+  style: ['italic', 'normal'],
+});
+const raleway = Raleway({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   style: ['italic', 'normal'],
 });
 
@@ -28,7 +33,7 @@ export default async function RootLayout({
       lang='en'
       className='h-full bg-white'
     >
-      <body className={lato.className} suppressHydrationWarning={true}>
+      <body className={raleway.className} suppressHydrationWarning={true}>
         <SessionProvider session={session}>
           <QueryProvider>
             <div>

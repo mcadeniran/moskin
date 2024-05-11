@@ -40,7 +40,7 @@ export default function SliderComponent() {
       </div>
       {/* Image Container */}
       <div className=" w-full relative flex-1">
-        <Image src={banner.image} alt='' fill className=' object-cover' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
+        <Image src={banner.image} alt='' fill className=' object-contain' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
       </div>
     </div>
   );

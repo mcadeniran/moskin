@@ -33,10 +33,12 @@ type CartItem = {
   price: number;
 };
 
-type DeliveryAddress = {
+type ShippingAddress = {
   fullName: string;
-  address: string;
+  house: string;
+  street: string;
   city: string;
+  state: string;
   postalCode: string;
   country: string;
 };

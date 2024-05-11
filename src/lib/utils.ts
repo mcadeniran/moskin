@@ -1,4 +1,3 @@
-import { Address } from '@prisma/client';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -29,12 +28,12 @@ const NC = [
 ];
 const SS = ['Edo', 'Delta', 'Cross River', 'Akwa Ibom', 'Rivers', 'Bayelsa'];
 
-export function getAddressDeliveryPrice(address: Address) {
-  const country = address.country;
+export function getAddressDeliveryPrice(country: string, state: string) {
+  // const country = address.country;
 
   if (country !== 'Nigeria') return 15000;
 
-  const state = address.state;
+  // const state = address.state;
 
   if (state === 'Lagos') return 1000;
 

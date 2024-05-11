@@ -1,9 +1,10 @@
 'use client';
+import {cartStore} from '@/lib/store';
 import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import {FC, ReactNode} from 'react';
+import {FC, ReactNode, useEffect} from 'react';
 
 const queryClient = new QueryClient();
 
@@ -12,6 +13,18 @@ interface QueryProviderProps {
 };
 
 const QueryProvider: FC<QueryProviderProps> = ({children}) => {
+  const updateStore = () => {
+    cartStore.persist.rehydrate();
+  };
+  useEffect(() => {
+    document.addEventListener('visibilitychange', updateStore);
+    window.addEventListener('focus', updateStore);
+    return () => {
+      document.removeEventListener('visibilitychange', updateStore);
+      window.removeEventListener('focus', updateStore);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {children}

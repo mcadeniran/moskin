@@ -35,7 +35,7 @@ const paymentTypes = [
 const fetchUserAddress = (): Promise<Address[]> => fetch('/api/user/address').then(res => res.json());
 export default function CartPage() {
   const session = useSession();
-  const {items, totalPrice, increase, decrease} = useCartStore();
+  const {items, totalPrice, increase, decrease, saveDeliveryAddress, savePaymentMethod} = useCartStore();
 
   const {isLoading, data: userAddress, error} = useQuery({queryKey: ['addresses'], queryFn: fetchUserAddress});
   const [address, setSelectedAddress] = useState('');
@@ -58,7 +58,7 @@ export default function CartPage() {
   useEffect(() => {
     const selectedAddress = userAddress && userAddress.find((ad) => ad.id === address);
     if (!selectedAddress) return;
-    const getDeliveryPrice = getAddressDeliveryPrice(selectedAddress);
+    const getDeliveryPrice = getAddressDeliveryPrice(selectedAddress.country, selectedAddress.state);
     setDelivery(getDeliveryPrice);
   }, [address, userAddress]);
 
@@ -69,24 +69,37 @@ export default function CartPage() {
   const selectedColor = 'bg-slate-800 text-white';
 
   const handleCheckout = async () => {
+    setLocalError('');
     if (!session.data) {
       return router.push('/login');
     }
     if (paymentType === '') {
       setLocalError('Please select a payment method');
-    } else {
-      try {
-        const res = await fetch("/api/orders", {
-          method: 'POST',
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({})
-        });
-      } catch (error) {
-        console.log(error);
-      }
+      return;
     }
+    if (address === '') {
+      setLocalError('Please select a delivery address');
+      return;
+    }
+    else {
+      const selectedAddress = userAddress && userAddress.find((ad) => ad.id === address);
 
 
+      if (!selectedAddress) {
+        return;
+      }
+      savePaymentMethod(paymentType);
+      saveDeliveryAddress({
+        house: selectedAddress.house,
+        street: selectedAddress.street,
+        city: selectedAddress.city,
+        state: selectedAddress.state,
+        postalCode: selectedAddress.postal,
+        country: selectedAddress.country,
+        fullName: '',
+      });
+      router.push('/shipping');
+    }
   };
 
   return (
@@ -255,9 +268,12 @@ export default function CartPage() {
                     </Button>
                   ))
                 }
-
               </div>
-              <FormError message={LocalError} />
+              {
+                LocalError !== '' && <div className="mb-2">
+                  <FormError message={LocalError} />
+                </div>
+              }
               <Button className='w-full bg-slate-600 cursor-pointer  disabled:cursor-not-allowed ' onClick={handleCheckout} disabled={items.length === 0}>Check Out</Button>
             </div>
           }

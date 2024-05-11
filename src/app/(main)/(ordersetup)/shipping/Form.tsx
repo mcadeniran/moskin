@@ -10,7 +10,6 @@ import * as z from 'zod';
 import {DeliveryAddressSchema} from '@/schemas';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
-import {Link} from 'lucide-react';
 import {Input} from '@/components/ui/input';
 
 const DeliveryAddressForm = () => {
@@ -20,36 +19,27 @@ const DeliveryAddressForm = () => {
   const form = useForm<z.infer<typeof DeliveryAddressSchema>>({
     resolver: zodResolver(DeliveryAddressSchema),
     defaultValues: {
-      fullname: '',
-      house: '',
-      street: '',
-      city: '',
-      state: '',
-      country: '',
-      postalCode: '',
+      fullname: deliveryAddress.fullName || '',
+      street: deliveryAddress.street || '',
+      house: deliveryAddress.house || '',
+      city: deliveryAddress.city || '',
+      state: deliveryAddress.state || '',
+      postalCode: deliveryAddress.postalCode || '',
+      country: deliveryAddress.country || ''
     }
   });
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: {errors, isSubmitting},
-  } = useForm<DeliveryAddress>({
-    defaultValues: {
-      fullName: '',
-      address: '',
-      city: '',
-      postalCode: '',
-      country: ''
-    }
-  });
-
 
   const formSubmit = async (values: z.infer<typeof DeliveryAddressSchema>) => {
-    // saveDeliveryAddress(form);
-    // router.push('/payment');
-    console.log(values);
+    saveDeliveryAddress({
+      house: values.house,
+      street: values.street,
+      city: values.city,
+      state: values.state,
+      postalCode: values.postalCode,
+      country: values.country,
+      fullName: values.fullname,
+    });
+    router.push('/payment');
   };
 
   return (

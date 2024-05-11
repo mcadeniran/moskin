@@ -12,7 +12,6 @@ interface ProductProp {
 }
 
 const PriceComponent = ({data}: ProductProp) => {
-  const [quantity, setQuantity] = useState(1);
   const {items, increase, decrease} = useCartStore();
 
   const [existItem, setExistItem] = useState<CartItem | undefined>();
@@ -26,20 +25,13 @@ const PriceComponent = ({data}: ProductProp) => {
       id: data.id, name: data.name,
       quantity: 0,
       image: data.images[0],
-      price: data.price,
+      price: data.onSale ? (data.price * (1 - (data.off! / 100))) : data.price,
     });
-    // addToCart({
-    //   id: data.id,
-    //   name: data.name,
-    //   image: data.images[0],
-    //   price: data.price,
-    //   quantity: quantity,
-    // });
-    // toast.success('Product added to cart.');
+    toast.success('Product added to cart.');
   };
 
   return (
-    <div className="flex flex-col items-start justify-start mt-8 gap-2 w-full">
+    <div className="flex flex-col items-start justify-start mt-4 gap-2 w-full">
       {data.onSale === false &&
         <p className=' font-medium text-gray-800 text-lg'>
           ₦{data.price.toLocaleString()}

@@ -5,7 +5,7 @@ type Cart = {
   items: CartItem[];
   totalPrice: number;
   paymentMethod: string;
-  deliveryAddress: DeliveryAddress;
+  deliveryAddress: ShippingAddress;
 };
 
 const initialState: Cart = {
@@ -14,8 +14,10 @@ const initialState: Cart = {
   paymentMethod: 'Online',
   deliveryAddress: {
     fullName: '',
-    address: '',
+    house: '',
+    street: '',
     city: '',
+    state: '',
     postalCode: '',
     country: '',
   },
@@ -63,7 +65,7 @@ export default function useCartStore() {
         totalPrice,
       });
     },
-    saveDeliveryAddress: (deliveryAddress: DeliveryAddress) => {
+    saveDeliveryAddress: (deliveryAddress: ShippingAddress) => {
       cartStore.setState({
         deliveryAddress,
       });
@@ -71,6 +73,14 @@ export default function useCartStore() {
     savePaymentMethod: (paymentMethod: string) => {
       cartStore.setState({
         paymentMethod,
+      });
+    },
+    clear: () => {
+      cartStore.setState({
+        items: [],
+        totalPrice: 0,
+        paymentMethod: '',
+        deliveryAddress: undefined,
       });
     },
   };
