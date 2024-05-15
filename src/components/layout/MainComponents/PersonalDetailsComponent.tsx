@@ -37,7 +37,7 @@ export default function PersonalDetailsComponent() {
     }
   });
 
-  const {isLoading, error, data, isSuccess} = useQuery({
+  const {isLoading, error, data} = useQuery({
     queryKey: ['personal'],
     queryFn: fetchUserPersonal
   });

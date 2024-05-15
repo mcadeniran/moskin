@@ -80,7 +80,15 @@ export default function useCartStore() {
         items: [],
         totalPrice: 0,
         paymentMethod: '',
-        deliveryAddress: undefined,
+        deliveryAddress: {
+          fullName: '',
+          house: '',
+          street: '',
+          city: '',
+          state: '',
+          country: '',
+          postalCode: '',
+        },
       });
     },
   };

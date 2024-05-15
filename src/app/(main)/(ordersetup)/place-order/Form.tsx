@@ -7,7 +7,6 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/c
 import useCartStore from '@/lib/store';
 import {getAddressDeliveryPrice} from '@/lib/utils';
 import {CircleNotch} from '@phosphor-icons/react/dist/ssr';
-import {useQuery} from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
@@ -20,7 +19,6 @@ const Form = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
   const [shippingPrice, setShippingPrice] = useState(0);
   const [total, setTotal] = useState(0);
 
@@ -30,23 +28,6 @@ const Form = () => {
     setTotal(t);
     setShippingPrice(sPrice);
   }, [deliveryAddress, totalPrice]);
-
-  useEffect(() => {
-    if (!paymentMethod) {
-      return router.push('/payment');
-    }
-    if (items.length === 0) {
-      return router.push('/');
-    }
-  }, [items.length, paymentMethod, router]);
-
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return <></>;
-
 
   const handlePlaceOrder = () => {
     setError('');
@@ -60,14 +41,32 @@ const Form = () => {
             setError(data.error);
           }
           if (data.success) {
-            setSuccess(data.success);
+            // console.log(data.data);
+            // setSuccess(data.success);
             toast.success(data.success);
-            router.push(`/orders/${data.data}`);
             clear();
+            return router.push(`/orders/${data.data}`);
           }
         }).catch(() => setError('Something went wrong!'));
     });
   };
+
+  useEffect(() => {
+    if (!paymentMethod) {
+      return router.push('/payment');
+    }
+    if (items.length === 0) {
+      return router.push('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <></>;
 
   return (
     <div className="flex flex-col w-full items-center justify-center gap-6 p-4 sm:p-6 md:p-8 lg:p-10">
@@ -127,10 +126,10 @@ const Form = () => {
             <p className="pt-4">
               {deliveryAddress.house},{' '}
               {deliveryAddress.street},{' '}
-              <p className="">
-                {deliveryAddress.city},{' '}
-                {deliveryAddress.state},
-              </p>
+            </p>
+            <p className="">
+              {deliveryAddress.city},{' '}
+              {deliveryAddress.state},
             </p>
             <p>
               {deliveryAddress.country},{' '}

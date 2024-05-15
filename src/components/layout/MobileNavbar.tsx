@@ -78,7 +78,7 @@ export async function MobileNavbar() {
           {
             session?.user &&
             <SheetClose asChild >
-              <Link href={'#'} className='flex justify-start  font-light p-4  hover:bg-accent'>
+              <Link href={'/orders'} className='flex justify-start  font-light p-4  hover:bg-accent'>
                 <SheetTitle className='font-light flex items-center  text-sm'><Basket className='mr-4 h-4 w-4' weight="light" />Orders</SheetTitle>
               </Link>
             </SheetClose>

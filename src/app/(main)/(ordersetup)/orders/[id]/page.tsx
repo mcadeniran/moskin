@@ -7,7 +7,11 @@ export function generateMetadata({params}: {params: {id: string;};}) {
   };
 }
 
+
+
 export default function OrderDetailsPage({params}: {params: {id: string;};}) {
+
+
   return (
     <OrderDetails id={params.id} paystackClientId={process.env.PAYSTACK_PUBLIC_KEY || 'sb'} />
   );
