@@ -2,6 +2,7 @@
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import { getAddressDeliveryPrice } from '@/lib/utils';
+import { OrderStatus } from '@prisma/client';
 
 export const createOrder = async (data: any) => {
   const session = await auth();
@@ -65,7 +66,6 @@ export const createOrder = async (data: any) => {
         shippingPrice,
         totalPrice,
         isPaid: false,
-        status: 'Not Paid',
       },
     });
     return {

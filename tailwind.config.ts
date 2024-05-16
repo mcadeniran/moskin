@@ -29,6 +29,7 @@ const config = {
         foreground: 'hsl(var(--foreground))',
         stardust: '#9DA29D',
         rosegold: '#B9A46D',
+        skyblue: '#555979',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

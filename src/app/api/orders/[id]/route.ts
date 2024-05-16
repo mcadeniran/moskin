@@ -17,9 +17,6 @@ export async function GET(request: Request) {
     where: {
       id,
     },
-    include: {
-      PaymentResult: true,
-    },
   });
 
   if (
@@ -69,6 +66,7 @@ export async function PATCH(request: Request) {
         paymentId,
         paidAt: new Date(),
         isPaid: true,
+        status: 'PROCESSING',
       },
     });
     return NextResponse.json(

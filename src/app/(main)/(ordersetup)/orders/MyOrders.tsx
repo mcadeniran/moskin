@@ -6,6 +6,7 @@ import {Order} from '@prisma/client';
 import {useQuery} from '@tanstack/react-query';
 import DateConverter from '@/components/date';
 import {useRouter} from 'next/navigation';
+import {Badge} from '@/components/ui/badge';
 
 
 const fetchUserOrders = (): Promise<Order[]> => fetch('/api/orders/mine').then(res => res.json());
@@ -31,41 +32,41 @@ export default function MyOrders() {
             <TableHeader>
               <TableRow>
                 <TableHead className="">Order#</TableHead>
-                <TableHead>Created At</TableHead>
+                <TableHead>Placed At</TableHead>
                 <TableHead>Items</TableHead>
                 <TableHead>Total</TableHead>
                 <TableHead>Payment Status</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="  text-right">Delivered</TableHead>
+                <TableHead className="  text-right">Delivered At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className=' cursor-pointer'>
               {orders?.map(order => (
                 <TableRow key={order.id} onClick={() => router.push(`/orders/${order.id}`)}>
 
-                  <TableCell className="max-w-[350px] font-medium">
-                    <span className="">...{order.id.substring(-6, 6)}</span>
+                  <TableCell className="max-w-[350px] font-bold">
+                    <span className="">#{order.id.substring(-6, 6)}</span>
                   </TableCell>
-                  <TableCell className="max-w-[350px] font-medium">
+                  <TableCell className="max-w-[350px] font-normal">
                     <span className=""><DateConverter dateString={order.createdAt.toString()} /></span>
                   </TableCell>
-                  <TableCell className="max-w-[350px] font-medium">
-                    <span className="">{order.items.length}</span>
+                  <TableCell className="max-w-[350px] font-normal">
+                    <span className="">{order.items.length}{' '}{order.items.length > 1 ? 'items' : 'item'}</span>
                   </TableCell>
-                  <TableCell className="max-w-[350px] font-medium">
-                    <span className="">₦{order.totalPrice}</span>
+                  <TableCell className="max-w-[350px] font-normal">
+                    <span className="">₦{order.totalPrice.toLocaleString()}</span>
                   </TableCell>
-                  <TableCell className="max-w-[350px] font-medium">
-                    <span className="">{order.isPaid ? 'Paid' : 'Not Paid'}</span>
+                  <TableCell className="max-w-[350px] font-normal">
+                    <Badge variant={order.isPaid ? 'delivered' : 'pending'} className='w-20 items-center justify-center' >{order.isPaid ? 'Paid' : 'Not Paid'}</Badge>
                   </TableCell>
-                  <TableCell className="max-w-[350px] font-medium">
-                    <span className="">{order.isPaid ? 'In Queue' : 'Shipped'}</span>
+                  <TableCell className="max-w-[350px] font-normal">
+                    <Badge variant={order.status === 'CANCELLED' ? 'destructive' :
+                      order.status === 'REJECTED' ? 'destructive' : order.status === 'PENDING' ? 'pending' :
+                        order.status === 'PROCESSING' ? 'processing' : order.status === 'DELIVERED' ? 'delivered' : 'default'
+                    } className='w-24 items-center justify-center'>{order.status}</Badge>
                   </TableCell>
-                  <TableCell className="max-w-[350px] font-medium   text-right">
-                    <span className="">{order.isDelivered ? 'Delivered' : 'Not Delivered'}</span>
+                  <TableCell className="max-w-[350px] font-normal   text-right">
                   </TableCell>
-
-
                 </TableRow>
               ))}
             </TableBody>

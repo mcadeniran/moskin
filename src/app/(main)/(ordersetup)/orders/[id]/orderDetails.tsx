@@ -169,7 +169,7 @@ export default function OrderDetails({id, paystackClientId}: {id: string, paysta
                     {shippingAddress.country},{' '}
                     {shippingAddress.postalCode}.
                   </p>
-                  {data.isDelivered ? (
+                  {data.status === 'DELIVERED' ? (
                     <div className="text-emerald-500">Delivered at {data.deliveredAt!.toDateString()}</div>
                   ) : (
                     <div className="mt-2 text-error">Not Delivered</div>

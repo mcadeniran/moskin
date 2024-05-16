@@ -1,10 +1,6 @@
 'use client';
 
-import {signOut} from "@/auth";
-import {SignOut} from "@phosphor-icons/react/dist/ssr";
-import {Button} from "./ui/button";
 import {logout} from "@/actions/logout";
-// import {signOut} from "next-auth/react";
 
 interface AccountSignoutProps {
   children?: React.ReactNode;

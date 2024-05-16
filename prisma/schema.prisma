@@ -14,20 +14,19 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(uuid())
-  email         String          @unique
-  password      String
-  username      String          @unique
-  fname         String          @default("")
-  lname         String          @default("")
-  image         String          @default("")
-  phone         String          @default("")
-  addresses     Address[]
-  orders        Order[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  isAdmin       Boolean         @default(false)
-  PaymentResult PaymentResult[]
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  username  String    @unique
+  fname     String    @default("")
+  lname     String    @default("")
+  image     String    @default("")
+  phone     String    @default("")
+  addresses Address[]
+  orders    Order[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  isAdmin   Boolean   @default(false)
 }
 
 model Address {
@@ -76,8 +75,17 @@ model Product {
   isFeatured  Boolean  @default(false)
 }
 
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  REJECTED
+  CANCELLED
+}
+
 model Order {
-  id              String         @id @default(uuid())
+  id              String      @id @default(uuid())
   userId          String
   items           Json[]
   shippingAddress Json
@@ -87,23 +95,12 @@ model Order {
   totalPrice      Int
   isPaid          Boolean
   paidAt          DateTime?
-  isDelivered     Boolean        @default(false)
   deliveredAt     DateTime?
-  status          String
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  paymentId       String?        @unique
-  User            User           @relation(fields: [userId], references: [id])
-  paymentResultId String?
-  PaymentResult   PaymentResult? @relation(fields: [paymentResultId], references: [id])
-}
-
-model PaymentResult {
-  id        String  @id @default(uuid())
-  status    String
-  User      User    @relation(fields: [userEmail], references: [email])
-  userEmail String
-  Order     Order[]
+  status          OrderStatus @default(PENDING)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  paymentId       String?     @unique
+  User            User        @relation(fields: [userId], references: [id])
 }
 
 model VerificationToken {

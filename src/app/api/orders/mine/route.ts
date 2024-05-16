@@ -14,6 +14,7 @@ export async function GET(req: Request) {
   try {
     const myOrders = await db.order.findMany({
       where: { userId: userSession.user.id! },
+      orderBy: { createdAt: 'desc' },
     });
 
     return NextResponse.json(myOrders);
