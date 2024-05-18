@@ -14,6 +14,8 @@ import {
 } from "react-icons/md";
 import MenuLink from './menuLink';
 import Image from 'next/image';
+import {auth} from '@/auth';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 
 const menuItems = [
   {
@@ -40,8 +42,8 @@ const menuItems = [
         icon: <MdCategory />,
       },
       {
-        title: "Transactions",
-        path: "/admin/transactions",
+        title: "Orders",
+        path: "/admin/orders",
         icon: <MdAttachMoney />,
       },
     ],
@@ -83,19 +85,17 @@ const menuItems = [
   },
 ];
 
-export default function AdminSidebar() {
+export default async function AdminSidebar() {
+  const session = await auth();
   return (
     <div className='sticky top-6'>
       <div className="flex items-center gap-5 mb-5">
-        <Image
-          src={'https://images.unsplash.com/photo-1522938974444-f12497b69347?q=80&w=3418&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
-          alt='avatar'
-          height={48}
-          width={48}
-          className='rounded-full h-12 w-12 md:h-16 md:w-16 object-cover'
-        />
+        <Avatar className='p-0 h-12 w-12 md:h-16 md:w-16'>
+          <AvatarImage src={session?.user.image} className=' object-cover' alt="@shadcn" />
+          <AvatarFallback className=' text'>{session?.user.username.substring(0, 1).toUpperCase()}</AvatarFallback>
+        </Avatar>
         <div className="flex flex-col">
-          <span className='font-semibold'>Jessica Felicio</span>
+          <span className='font-semibold'>{session?.user.username}</span>
           <span className='text-xs text-gray-500'>Administrator</span>
         </div>
       </div>

@@ -12,7 +12,7 @@ import {Badge} from '@/components/ui/badge';
 const fetchUserOrders = (): Promise<Order[]> => fetch('/api/orders/mine').then(res => res.json());
 export default function MyOrders() {
   const router = useRouter();
-  const {isLoading, data: orders, error} = useQuery({queryKey: ['addresses'], queryFn: fetchUserOrders});
+  const {isLoading, data: orders, error} = useQuery({queryKey: ['orders'], queryFn: fetchUserOrders});
 
   if (isLoading) return <p className="">Loading Orders</p>;
   if (error) return <p className="">Unknown error occured</p>;

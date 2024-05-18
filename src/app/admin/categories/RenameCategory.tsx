@@ -15,26 +15,27 @@ const formSchema = z.object({
   name: z.string().min(3),
 });
 
-export default function CreateCategory() {
+export default function EditCategory({id, name}: {id: string, name: string;}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
+      name: name,
     }
   });
 
   const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
-  const [pending, setIsPending] = useState(false);
+  const [pending, setPending] = useState(false);
 
   const router = useRouter();
 
+
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsPending(true);
     setError('');
-    const data = {...values};
+    setPending(true);
+    const data = {...values, id};
     const result = await fetch('/api/category', {
-      method: 'POST',
+      method: 'PATCH',
       body: JSON.stringify(data)
     });
 
@@ -42,26 +43,25 @@ export default function CreateCategory() {
       const res = await result.json();
       toast.success(res.message);
       form.setValue('name', '');
-      setIsPending(false);
-      setOpen(false);
       router.refresh();
+      setPending(false);
+      setOpen(false);
     } else {
       const res = await result.json();
       setError(res.message);
-      setIsPending(false);
-      // toast.error('Failed to create category.');
+      setPending(false);
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add category</Button>
+        <Button variant='ghost'>Rename</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Add new category
+            Rename category
           </DialogTitle>
         </DialogHeader>
         <div className='flex w-full  bg-accent p-4 rounded-xl gap-4'>
@@ -78,7 +78,7 @@ export default function CreateCategory() {
               }} />
               <FormError message={error} />
               <div className="flex justify-end">
-                <Button className=' w-min' disabled={pending}>Create Category</Button>
+                <Button className=' w-min' disabled={pending}>Rename Category</Button>
               </div>
             </form>
           </Form>
