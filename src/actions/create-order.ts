@@ -2,17 +2,12 @@
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import { getAddressDeliveryPrice } from '@/lib/utils';
-import { OrderStatus } from '@prisma/client';
 
 export const createOrder = async (data: any) => {
   const session = await auth();
   const user = session?.user;
 
   if (!user) {
-    return { error: 'Unauthorized' };
-  }
-
-  if (user.isAdmin === false) {
     return { error: 'Unauthorized' };
   }
 
