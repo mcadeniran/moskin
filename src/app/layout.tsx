@@ -5,6 +5,7 @@ import {Toaster} from '@/components/ui/sonner';
 import {SessionProvider} from 'next-auth/react';
 import {auth} from '@/auth';
 import QueryProvider from '@/components/QueryProvider';
+import {Analytics} from "@vercel/analytics/react";
 
 const lato = Lato({
   subsets: ['latin'],
@@ -38,6 +39,7 @@ export default async function RootLayout({
           <QueryProvider>
             <div>
               {children}
+              <Analytics />
             </div>
             <Toaster />
           </QueryProvider>
