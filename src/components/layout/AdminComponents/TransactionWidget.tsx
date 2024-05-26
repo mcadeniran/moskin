@@ -1,17 +1,17 @@
 'use client';
 import {Badge} from '@/components/ui/badge';
-import {Order} from '@prisma/client';
 import {useQuery} from '@tanstack/react-query';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import React from 'react';
+import DateConverter from '@/components/date';
 
-const fetchOrdersWidget = (): Promise<any[]> => fetch('/api/admin/orders').then(res => res.json());
+const fetchOrdersWidget = (): Promise<any[]> => fetch('/api/admin/widgets/transactions').then(res => res.json());
 
 export default function TransactionWidget() {
   const {isLoading, data: orders, error} = useQuery({queryKey: ['ordersWidget'], queryFn: fetchOrdersWidget});
 
-  if (isLoading) return <p className="">Loading Orders</p>;
-  if (error) return <p className="">Unknown error occured</p>;
+  if (isLoading) return <div className='mt-8 p-5 border  bg-accent rounded-xl'><p className="">Loading Orders</p></div>;
+  if (error) return <div className='mt-8 p-5 border  bg-accent rounded-xl'><p className="">Unknown error occured</p></div>;
 
 
   return (
@@ -44,10 +44,9 @@ export default function TransactionWidget() {
                     order.status === 'PROCESSING' ? 'processing' : order.status === 'DELIVERED' ? 'delivered' : 'default'
                 } className='min-w-24 items-center justify-center'>{order.status}</Badge>
               </td>
-              <td className='p-2'>{order.createdAt.toString()}</td>
+              <td><DateConverter dateString={order.createdAt.toString()} /></td>
               <td className='p-2'>₦{order.totalPrice.toLocaleString()}</td>
             </tr>
-
           ))}
         </tbody>
       </table>

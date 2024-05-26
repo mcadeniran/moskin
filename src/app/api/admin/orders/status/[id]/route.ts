@@ -41,6 +41,7 @@ export async function GET(
             : 'REJECTED',
       },
       include: { User: true },
+      orderBy: { createdAt: 'desc' },
     });
 
     return NextResponse.json(order);

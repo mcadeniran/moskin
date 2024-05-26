@@ -29,7 +29,7 @@ const AllOrders = () => {
   console.log(orders);
 
   return (
-    <div className='mt-4 min- h-[calc(100vh-23.8rem)]'>
+    <div className='mt-4 min-h-[calc(100vh-23.8rem)]'>
       {
         orders?.length === 0 ?
           <div>No orders found</div>
@@ -45,7 +45,7 @@ const AllOrders = () => {
                 <TableHead>Payment Status</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Delivered At</TableHead>
-                <TableHead>Action</TableHead>
+                {/* <TableHead>Action</TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -76,7 +76,7 @@ const AllOrders = () => {
                       } className='min-w-24 items-center justify-center'>{order.status}</Badge>
                     </TableCell>
                     <TableCell>{order.deliveredAt ? <DateConverter dateString={order.deliveredAt.toString()} /> : <Badge variant='pending'>Not Delivered</Badge>}</TableCell>
-                    <TableCell>Action</TableCell>
+                    {/* <TableCell>Action</TableCell> */}
                   </TableRow>
                 ))
               }

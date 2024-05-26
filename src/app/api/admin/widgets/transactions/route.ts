@@ -22,7 +22,7 @@ export async function GET(request: Request) {
   try {
     const order = await db.order.findMany({
       include: { User: true },
-      orderBy: { createdAt: 'asc' },
+      orderBy: { createdAt: 'desc' },
       take: 5,
     });
 
