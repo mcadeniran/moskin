@@ -6,6 +6,7 @@ import {SessionProvider} from 'next-auth/react';
 import {auth} from '@/auth';
 import QueryProvider from '@/components/QueryProvider';
 import {Analytics} from "@vercel/analytics/react";
+import {SpeedInsights} from "@vercel/speed-insights/next";
 
 const lato = Lato({
   subsets: ['latin'],
@@ -40,6 +41,7 @@ export default async function RootLayout({
             <div>
               {children}
               <Analytics />
+              <SpeedInsights />
             </div>
             <Toaster />
           </QueryProvider>

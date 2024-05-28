@@ -71,6 +71,25 @@ export async function PATCH(req: Request) {
         { status: 500 }
       );
     }
+  } else if (body.type === 'REJECTED') {
+    try {
+      await db.order.update({
+        where: { id: body.id },
+        data: {
+          status: 'REJECTED',
+          reason: body.reason,
+        },
+      });
+      return NextResponse.json(
+        { success: true, message: 'Order has been rejected' },
+        { status: 200 }
+      );
+    } catch (error) {
+      return NextResponse.json(
+        { success: false, message: 'Something went wrong while rejecting' },
+        { status: 500 }
+      );
+    }
   } else {
     return NextResponse.json(
       { success: false, message: 'Something went wrong' },

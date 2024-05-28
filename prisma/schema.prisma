@@ -101,6 +101,7 @@ model Order {
   updatedAt       DateTime    @updatedAt
   paymentId       String?     @unique
   User            User        @relation(fields: [userId], references: [id])
+  reason          String?
 }
 
 model VerificationToken {

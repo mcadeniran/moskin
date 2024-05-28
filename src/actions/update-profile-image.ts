@@ -17,10 +17,6 @@ export const updateProfileImage = async (files: any) => {
     return { error: 'Unauthorized' };
   }
 
-  if (user.isAdmin === false) {
-    return { error: 'Unauthorized' };
-  }
-
   const currentUser = await db.user.findUnique({
     where: { id: user.id },
   });
