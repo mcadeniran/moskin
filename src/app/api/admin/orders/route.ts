@@ -90,10 +90,29 @@ export async function PATCH(req: Request) {
         { status: 500 }
       );
     }
+  } else if (body.type === 'DELIVERED') {
+    try {
+      await db.order.update({
+        where: { id: body.id },
+        data: {
+          status: 'DELIVERED',
+          deliveredAt: new Date(),
+        },
+      });
+      return NextResponse.json(
+        { success: true, message: 'Order has been delivered' },
+        { status: 200 }
+      );
+    } catch (error) {
+      return NextResponse.json(
+        { success: false, message: 'Something went wrong while rejecting' },
+        { status: 500 }
+      );
+    }
   } else {
     return NextResponse.json(
-      { success: false, message: 'Something went wrong' },
-      { status: 500 }
+      { success: false, message: 'Unknown Order Status' },
+      { status: 405 }
     );
   }
 }

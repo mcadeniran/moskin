@@ -3,15 +3,12 @@ import React from 'react';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import {Order} from '@prisma/client';
-import {useRouter} from 'next/navigation';
 import {useQuery} from '@tanstack/react-query';
 import DateConverter from '@/components/date';
 import {Badge} from '@/components/ui/badge';
@@ -22,7 +19,6 @@ const fetchDeliveredOrders = (): Promise<Order[]> => fetch('/api/admin/orders/st
 
 
 const DeliveredOrders = () => {
-  const router = useRouter();
   const {isLoading, data: orders, error} = useQuery({queryKey: ['deliveredOrders'], queryFn: fetchDeliveredOrders});
 
   if (isLoading) return <p className="">Loading Delivered Orders</p>;
@@ -40,14 +36,10 @@ const DeliveredOrders = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Order#</TableHead>
-                {/* <TableHead>By</TableHead> */}
                 <TableHead>Placed At</TableHead>
                 <TableHead>Items</TableHead>
                 <TableHead>Total Amount</TableHead>
-                <TableHead>Payment Status</TableHead>
-                <TableHead>Status</TableHead>
                 <TableHead>Delivered At</TableHead>
-                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -60,25 +52,13 @@ const DeliveredOrders = () => {
                     <TableCell>{order.items.map((item: any) => (
                       <div className="" key={item.id}>{item.name} x {item.quantity}<br /></div>
                     ))}</TableCell>
-                    <TableCell>₦{order.totalPrice}</TableCell>
-                    <TableCell className=''>
-                      <div className="flex gap-2 items-center">
-                        <Badge variant={order.isPaid ? 'delivered' : 'pending'} className='min-w-20 items-center justify-center' >
-                          {order.isPaid ? 'Paid' : 'Not Paid'}
-                        </Badge>
-                        {order.paymentMethod === 'OnlinePayment' ? <CreditCard size={18} /> : <Bank size={18} />}
-
-                      </div>
-
-                    </TableCell>
+                    <TableCell>₦{order.totalPrice.toLocaleString()}</TableCell>
                     <TableCell>
-                      <Badge variant={order.status === 'CANCELLED' ? 'destructive' :
-                        order.status === 'REJECTED' ? 'destructive' : order.status === 'PENDING' ? 'pending' :
-                          order.status === 'PROCESSING' ? 'processing' : order.status === 'DELIVERED' ? 'delivered' : 'default'
-                      } className='min-w-24 items-center justify-center'>{order.status}</Badge>
+                      {!order.deliveredAt ? ''
+                        : <Badge variant='delivered'>
+                          <DateConverter dateString={order.deliveredAt.toString()} />
+                        </Badge>}
                     </TableCell>
-                    <TableCell>{order.deliveredAt ? <DateConverter dateString={order.deliveredAt.toString()} /> : <Badge variant='pending'>Not Delivered</Badge>}</TableCell>
-                    <TableCell>Action</TableCell>
                   </TableRow>
                 ))
               }

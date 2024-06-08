@@ -1,19 +1,8 @@
 import SearchBar from '@/components/layout/AdminComponents/SearchBar';
-import Link from 'next/link';
 import React from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog";
-import {Button} from '@/components/ui/button';
 import CreateCategory from '@/components/layout/AdminComponents/CreateCategory';
 import {db} from '@/lib/db';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
-import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from '@/components/ui/alert-dialog';
-import {Trash} from '@phosphor-icons/react/dist/ssr';
 import DeleteCategory from './DeleteCategory';
 import RenameCategory from './RenameCategory';
 

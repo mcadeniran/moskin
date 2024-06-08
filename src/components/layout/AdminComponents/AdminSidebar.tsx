@@ -11,6 +11,7 @@ import {
   MdSwitchAccount,
   MdLogout,
   MdCategory,
+  MdOutlineAutoAwesome,
 } from "react-icons/md";
 import MenuLink from './menuLink';
 import Image from 'next/image';
@@ -46,28 +47,33 @@ const menuItems = [
         path: "/admin/orders",
         icon: <MdAttachMoney />,
       },
-    ],
-  },
-  {
-    title: "Analytics",
-    list: [
       {
-        title: "Revenue",
-        path: "/admin/revenue",
-        icon: <MdWork />,
-      },
-      {
-        title: "Reports",
-        path: "/admin/reports",
-        icon: <MdAnalytics />,
-      },
-      {
-        title: "Teams",
-        path: "/admin/teams",
-        icon: <MdPeople />,
+        title: "Featured",
+        path: "/admin/featured",
+        icon: <MdOutlineAutoAwesome />,
       },
     ],
   },
+  // {
+  //   title: "Analytics",
+  //   list: [
+  //     {
+  //       title: "Revenue",
+  //       path: "/admin/revenue",
+  //       icon: <MdWork />,
+  //     },
+  //     {
+  //       title: "Reports",
+  //       path: "/admin/reports",
+  //       icon: <MdAnalytics />,
+  //     },
+  //     {
+  //       title: "Teams",
+  //       path: "/admin/teams",
+  //       icon: <MdPeople />,
+  //     },
+  //   ],
+  // },
   {
     title: "User",
     list: [

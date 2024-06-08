@@ -26,7 +26,6 @@ const AllOrders = () => {
   if (isLoading) return <p className="">Loading Orders</p>;
   if (error) return <p className="">Unknown error occured</p>;
 
-  console.log(orders);
 
   return (
     <div className='mt-4 min-h-[calc(100vh-23.8rem)]'>
@@ -75,7 +74,7 @@ const AllOrders = () => {
                           order.status === 'PROCESSING' ? 'processing' : order.status === 'DELIVERED' ? 'delivered' : 'default'
                       } className='min-w-24 items-center justify-center'>{order.status}</Badge>
                     </TableCell>
-                    <TableCell>{order.deliveredAt ? <DateConverter dateString={order.deliveredAt.toString()} /> : <Badge variant='pending'>Not Delivered</Badge>}</TableCell>
+                    <TableCell>{order.deliveredAt ? <Badge variant='delivered'><DateConverter dateString={order.deliveredAt.toString()} /></Badge> : <Badge variant='pending'>Not Delivered</Badge>}</TableCell>
                     {/* <TableCell>Action</TableCell> */}
                   </TableRow>
                 ))
