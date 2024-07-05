@@ -173,7 +173,7 @@ const EditProductForm = ({product, categories, id}: {product: Product; categorie
             <div className="flex justify-between items-center">
               <div className="flex gap-2">
                 <Button type='submit' className=' w-min px-8 py-3' disabled={isPending} >
-                  {isPending ? <Loader /> : 'Upadate Product'}
+                  {isPending ? <Loader /> : 'Update Product'}
                 </Button>
                 <FormSuccess message={success} />
                 <FormError message={error} />

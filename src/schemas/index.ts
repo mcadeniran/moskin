@@ -91,3 +91,9 @@ export const ProductFormSchema = z.object({
   images: z.array(z.string()),
   display: z.boolean(),
 });
+
+export const RoleFormSchema = z.object({
+  isAdmin: z
+    .string({ message: 'Change Role' })
+    .min(1, { message: 'Change role' }),
+});

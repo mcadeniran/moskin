@@ -1,16 +1,21 @@
-import {FacebookLogo, InstagramLogo, TiktokLogo, XLogo} from "@phosphor-icons/react/dist/ssr";
+import {RiFacebookLine, RiInstagramLine, RiTwitterXFill} from "react-icons/ri";
 
 export default function FooterSection() {
   return (
-    <div className='bottom-0 flex flex-col border-t w-5/6 p-4 gap-4 mx-auto text-xs text-center text-slate-700'>
-      <div className="flex gap-4 justify-center">
-        <FacebookLogo size={22} className=" cursor-pointer" weight="light" />
-        <InstagramLogo size={22} className=" cursor-pointer" weight="light" />
-        <XLogo size={22} className=" cursor-pointer" weight="light" />
+    <div className='bottom-0 flex flex-row mt-4 border-t-[0.2px] border-rosegold px-2 lg:px-8 py-5 items-center justify-between text-xs text-center'>
+      <div className="font-medium">
+        <a href='mailto: kolamaster@gmail.com'>© 2024 MIIZELLA ORGANIC SKINCARE🍃</a>
       </div>
-      <div className="font-light">
-        © 2024{' '}
-        <a href='mailto: kolamaster@gmail.com'>MIIZELLA ORGANIC SKINCARE🍃</a>
+      <div className="flex gap-4 justify-center">
+        <div className="rounded-full p-2 border cursor-pointer">
+          <RiFacebookLine size={18} />
+        </div>
+        <div className="rounded-full p-2 border cursor-pointer">
+          <RiTwitterXFill size={18} />
+        </div>
+        <div className="rounded-full p-2 border cursor-pointer">
+          <RiInstagramLine size={18} />
+        </div>
       </div>
     </div>
   );

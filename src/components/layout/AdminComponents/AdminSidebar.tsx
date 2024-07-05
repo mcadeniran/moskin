@@ -113,7 +113,7 @@ export default async function AdminSidebar() {
           </li>
         ))}
       </ul>
-      <button className='flex p-4 items-center my-1 gap-3 rounded-lg w-full hover:bg-gray-100'><MdLogout /> Logout</button>
+      <button className='flex p-3 items-center my-1 font-light gap-3 rounded-lg w-full hover:bg-gray-300'><MdLogout /> Logout</button>
     </div>
   );
 }

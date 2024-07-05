@@ -1,12 +1,11 @@
 'use client';
 
 import {Button} from '@/components/ui/button';
-import {Product} from '@prisma/client';
 import {useQuery} from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
 import FeaturedLoadingComponent from './FeaturedLoadingComponent';
-import {ArrowRight, ArrowsOut, ShoppingCart} from '@phosphor-icons/react/dist/ssr';
+import {ArrowRight} from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
 import TitleComponenet from './TitleComponenet';
 import {AspectRatio} from '@/components/ui/aspect-ratio';

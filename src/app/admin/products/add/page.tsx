@@ -55,8 +55,6 @@ export default function AddProductPage() {
     } else {
       toast.error('Failed to create product.');
     }
-
-    console.log('Result: ' + result.body);
   };
 
   const handleFileAdd = async (filesToUpload: string[]) => {

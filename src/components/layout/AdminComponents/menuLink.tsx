@@ -13,7 +13,7 @@ export default function MenuLink({item}: {
   const pathname = usePathname();
 
   return (
-    <Link href={item.path} className={`flex p-4 items-center my-1 gap-3 rounded-lg hover:bg-gray-300 ${pathname === item.path && 'bg-gray-300'}`}>
+    <Link href={item.path} className={`flex p-3 text-base font-light items-center my-1 gap-3 rounded-lg hover:bg-gray-300 ${pathname === item.path && 'bg-gray-300'}`}>
       {item.icon}
       {item.title}
     </Link>

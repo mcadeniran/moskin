@@ -43,11 +43,6 @@ export default function FeaturedProducts() {
   if (isLoading) return <p className="">Loading products</p>;
   if (error) return <p className="">Unknown error occured</p>;
 
-  const onUpdated = () => {
-    queryClient.invalidateQueries({queryKey: ['processingOrders']});
-  };
-
-
   const handleCheckedChange = (state: any, id: string) => {
     const doc = {state, id};
     setPending(true);
