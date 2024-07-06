@@ -70,8 +70,6 @@ export default function ProductsPage() {
     mutation.mutate(doc);
   };
 
-  console.log(products);
-
   return (
     <div className=" bg-accent p-4 rounded-xl">
       <div className="flex justify-between items-center mb-8">

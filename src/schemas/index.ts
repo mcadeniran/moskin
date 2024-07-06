@@ -40,6 +40,10 @@ export const ResetSchema = z.object({
   emailAddress: z.string().min(1, 'Email is required').email('Invalid email'),
 });
 
+export const ReviewSchema = z.object({
+  details: z.string().min(1, 'Please enter review'),
+});
+
 export const UsernameSchema = z.object({
   username: z
     .string()

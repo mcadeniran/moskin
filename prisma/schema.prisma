@@ -27,6 +27,7 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   isAdmin   Boolean   @default(false)
+  reviews   Review[]
 }
 
 model Address {
@@ -73,6 +74,20 @@ model Product {
   Category    Category @relation(fields: [categoryId], references: [id])
   categoryId  String
   isFeatured  Boolean  @default(false)
+  Reviews     Review[]
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  details   String
+  rating    Float
+  edited    Boolean  @default(false)
+  Product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
 
 enum OrderStatus {
