@@ -14,7 +14,7 @@ export default function FeaturedComponent() {
   const {isLoading, error, data} = useQuery({
     queryKey: ['featured'],
     queryFn: () =>
-      fetch('/api/featured', {cache: 'no-cache'}).then(res => res.json())
+      fetch('/api/featured', {next: {revalidate: 60}}).then(res => res.json())
   });
 
   if (isLoading) return <FeaturedLoadingComponent />;
