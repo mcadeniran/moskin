@@ -2,8 +2,6 @@
 import {deleteCategory} from '@/actions/delete-category';
 import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from '@/components/ui/alert-dialog';
 import {Button} from '@/components/ui/button';
-import {db} from '@/lib/db';
-import {Trash} from '@phosphor-icons/react/dist/ssr';
 import {useRouter} from 'next/navigation';
 
 import React, {startTransition} from 'react';

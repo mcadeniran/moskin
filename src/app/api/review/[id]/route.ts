@@ -9,8 +9,6 @@ export async function GET(request: Request) {
 
   const id = request.url.slice(request.url.lastIndexOf('/') + 1);
 
-  console.log('Product ID: ', id);
-
   if (userSession) {
     const orders: any[] = await db.order.findMany({
       where: {

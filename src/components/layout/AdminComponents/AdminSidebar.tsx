@@ -12,6 +12,7 @@ import {
   MdLogout,
   MdCategory,
   MdOutlineAutoAwesome,
+  MdOutlineRateReview,
 } from "react-icons/md";
 import MenuLink from './menuLink';
 import Image from 'next/image';
@@ -48,9 +49,9 @@ const menuItems = [
         icon: <MdAttachMoney />,
       },
       {
-        title: "Featured",
-        path: "/admin/featured",
-        icon: <MdOutlineAutoAwesome />,
+        title: "Reviews",
+        path: "/admin/reviews",
+        icon: <MdOutlineRateReview />,
       },
     ],
   },

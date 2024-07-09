@@ -88,6 +88,8 @@ model Review {
   productId String
   User      User     @relation(fields: [userId], references: [id])
   userId    String
+  reply     String?
+  replied   Boolean  @default(false)
 }
 
 enum OrderStatus {
